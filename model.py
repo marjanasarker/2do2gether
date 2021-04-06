@@ -23,7 +23,7 @@ class User_habit(db.Model):
 
     __tablename__ = 'user_habit'
 
-    user_habit_id = db.Column(db.Integer, autoincrement=True, primary_key=True)      #turned yellow when I just had id
+    user_habit_id = db.Column(db.Integer, autoincrement=True, primary_key=True)      
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     habit_id = db.Column(db.Integer, db.ForeignKey('habit.habit_id'))
     accountability_partner_id = db.Column(db.Integer, db.ForeignKey('user.user_id')) 
@@ -53,9 +53,66 @@ class Habit(db.Model):
         return f'<Habit habit_id={self.habit_id} name={self.name}>'
 
 class Habit_log(db.Model):
-    "A daily habit-log for user"
+    """A daily habit-log for user"""
 
     __tablename__ = 'habit-log'
 
+    habit_log_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_habit_id = db.Column(db.Integer, db.ForeignKey('user_habit.user_habit_id'))
+    journal_id = db.Column(db.Integer, db.ForeignKey('journal_log.journal_id'))
+    date_of = db.Column(db.Datetime)
+    progress = db.Column(db.Numeric)
+
+    user_habit = db.relationship('User_habit', backref='habit_log')
+    journal_log = db.relationship('Journal_log', backref='habit_log')
+
+    def __repr__(self):
+        return f'<Habit_log habit_log_id={self.habit_log_id} date_of={self.date_of} progress={self.progress}>
+
+class Journal_log(db.Model):
+    """Journal entries"""
+
+    __tablename__ = 'journal-entries'
+
+    journal_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    journal_entry = db.Column(db.Text)
+
+    def __repr__(self):
+        return f'<Journal_log journal_id={self.journal_id} journal_entry={self.journal_entry}>
+
+class Messages(db.Model):
+    """Accountability messages and replies"""
+
+    __tablename__ = "messages"
+
+    messages_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_habit_id = db.Column(db.Integer, db.ForeignKey('user_habit.user_habit_id'))
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+    receiver_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+    timestamp = db.Column(db.Datetime)
+    message = db.Column(db.Text)
+
+    user_habit = db.relationship('User_habit', backref='messages')
+    user = db.relationship('User', backref='messages')
     
 
+
+
+def connect_to_db(flask_app, db_uri='postgresql:///habits', echo=True):
+    flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+    flask_app.config['SQLALCHEMY_ECHO'] = echo
+    flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    db.app = flask_app
+    db.init_app(flask_app)
+
+    print('Connected to the db!')
+
+if __name__ == '__main__':
+    from server import app
+
+    # Call connect_to_db(app, echo=False) if your program output gets
+    # too annoying; this will tell SQLAlchemy not to print out every
+    # query it executes.
+
+    connect_to_db(app)
