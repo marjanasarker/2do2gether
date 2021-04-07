@@ -7,12 +7,12 @@ db = SQLAlchemy()
 class User(db.Model):
     """A user"""
 
-    __tablename__ = 'user'
+    __tablename__ = 'users'
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     fname = db.Column(db.String(40))
     lname = db.Column(db.String(40))
-    email = db.Column(db.String(40) unique = True)
+    email = db.Column(db.String(40), unique = True)
     password = db.Column(db.String(8)) #how do you make the requirement alphanumeric
 
     def __repr__(self):
@@ -24,29 +24,30 @@ class User_habit(db.Model):
     __tablename__ = 'user_habit'
 
     user_habit_id = db.Column(db.Integer, autoincrement=True, primary_key=True)      
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     habit_id = db.Column(db.Integer, db.ForeignKey('habit.habit_id'))
-    accountability_partner_id = db.Column(db.Integer, db.ForeignKey('user.user_id')) 
+    accountability_partner_id = db.Column(db.Integer, db.ForeignKey('users.user_id')) 
     goal = db.Column(db.Integer)
     completed = db.Column(db.Boolean)
     name = db.Column(db.String)
     type_of_execution = db.Column(db.String)
-    start_date = db.Column(db.Datetime)
-    end_date = db.Column(db.Datetime)
+    start_date = db.Column(db.DateTime)
+    end_date = db.Column(db.DateTime)
 
-    user = db.relationship('User', backref='user_habit')
-    habit = db.relationship('Habit' backref='user_habit')
+    user = db.relationship('User', foreign_keys=[user_id])
+    accountability_user = db.relationship('User', foreign_keys=[accountability_partner_id])
+    habit = db.relationship('Habit')
 
 
     def __repr__(self):
-        return f'<User_habit user_id={self.user_id} name={self.name} goal={self.goal} start_date={self.start_date} end_date={self.end_date}
+        return f'<User_habit user_id={self.user_id} name={self.name} goal={self.goal} start_date={self.start_date} end_date={self.end_date}>'
 
 class Habit(db.Model):
     """the Habit list"""
 
     __tablename__ = 'habit'
 
-    habit_id = db.Column(db.Interger, autoincrement=True, primary_key=True)
+    habit_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(100))
 
     def __repr__(self):
@@ -55,30 +56,30 @@ class Habit(db.Model):
 class Habit_log(db.Model):
     """A daily habit-log for user"""
 
-    __tablename__ = 'habit-log'
+    __tablename__ = 'habit_log'
 
     habit_log_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_habit_id = db.Column(db.Integer, db.ForeignKey('user_habit.user_habit_id'))
     journal_id = db.Column(db.Integer, db.ForeignKey('journal_log.journal_id'))
-    date_of = db.Column(db.Datetime)
+    date_of = db.Column(db.DateTime)
     progress = db.Column(db.Numeric)
 
     user_habit = db.relationship('User_habit', backref='habit_log')
     journal_log = db.relationship('Journal_log', backref='habit_log')
 
     def __repr__(self):
-        return f'<Habit_log habit_log_id={self.habit_log_id} date_of={self.date_of} progress={self.progress}>
+        return f'<Habit_log habit_log_id={self.habit_log_id} date_of={self.date_of} progress={self.progress}>'
 
 class Journal_log(db.Model):
     """Journal entries"""
 
-    __tablename__ = 'journal-entries'
+    __tablename__ = 'journal_log'
 
     journal_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     journal_entry = db.Column(db.Text)
 
     def __repr__(self):
-        return f'<Journal_log journal_id={self.journal_id} journal_entry={self.journal_entry}>
+        return f'<Journal_log journal_id={self.journal_id} journal_entry={self.journal_entry}>'
 
 class Messages(db.Model):
     """Accountability messages and replies"""
@@ -87,15 +88,18 @@ class Messages(db.Model):
 
     messages_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_habit_id = db.Column(db.Integer, db.ForeignKey('user_habit.user_habit_id'))
-    sender_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
-    receiver_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
-    timestamp = db.Column(db.Datetime)
+    sender_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    receiver_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    timestamp = db.Column(db.DateTime)
     message = db.Column(db.Text)
 
+    sender = db.relationship('User', foreign_keys=[sender_id])
+    receiver = db.relationship('User', foreign_keys=[receiver_id])
     user_habit = db.relationship('User_habit', backref='messages')
-    user = db.relationship('User', backref='messages')
     
-
+    
+    def __repr__(self):
+        return f'<messages_id={self.messages_id} message={self.message}>'
 
 
 def connect_to_db(flask_app, db_uri='postgresql:///habits', echo=True):
