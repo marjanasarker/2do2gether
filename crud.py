@@ -1,9 +1,9 @@
 """Create, Read, Update and Delete operations"""
 from model import db, User, User_habit, Habit, Habit_log, Journal_log, Messages, connect_to_db
 
-def create_user(user_id, fname, lname, email, password):
+def create_user(fname, lname, email, password):
     """Create and return a new user"""
-    user = User(user_id=user_id, fname=fname, lname=lname, email=email, password=password)
+    user = User(fname=fname, lname=lname, email=email, password=password)
 
     db.session.add(user)
     db.session.commit()
@@ -64,6 +64,10 @@ def get_user_by_email(email):
     """Returns user with email"""
 
     return User.query.filter(User.email == email).first()
+
+def get_habits_by_user(user_id):
+
+    return User_habit.query.filter_by(user_id=user_id).all() 
 
 
 if __name__ == '__main__':
