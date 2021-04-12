@@ -10,7 +10,7 @@ def create_user(user_id, fname, lname, email, password):
     
     return user
 
-def create_habit(user, goal, name, type_of_execution, start_date, end_date):
+def create_user_habit(user, goal, name, type_of_execution, start_date, end_date):
     """Create and return a new habit set up"""
     user_habit = User_habit(user=user, goal=goal, name=name, 
                            type_of_execution=type_of_execution, 
