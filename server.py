@@ -56,8 +56,8 @@ def regular_user_login():
     
 
     if user and user.password == password:
-        #session[user_id] = user.user_id
-        #print(session)
+        session['user_id'] = user.user_id
+        print(session)
         return redirect('/habit')
     else:
         flash('Password or email address entered incorrectly, try again.')
