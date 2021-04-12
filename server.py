@@ -42,15 +42,33 @@ def register_user():
 
     #return render_template('login.html')
 @app.route('/login')
-def regular_user_login():
+def show_login():
 
     return render_template('login.html')
 
-#@app.route('/login', methods=['POST'] )
-#def regular_user_login():
+@app.route('/login', methods=['POST'])
+def regular_user_login():
 
-    #redirect('login.html')  change this
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    user = crud.get_user_by_email(email)
     
+
+    if user and user.password == password:
+        #session[user_id] = user.user_id
+        #print(session)
+        return redirect('/habit')
+    else:
+        flash('Password or email address entered incorrectly, try again.')
+
+    
+    return redirect('/login')  #change this
+
+@app.route('/habit')
+def show_habit():
+
+    return render_template('habit.html') 
 
 if __name__ == '__main__':
     connect_to_db(app)
