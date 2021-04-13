@@ -12,6 +12,19 @@
 {{user_habits}}
 {%if not user_habits%}
 <h1>Let's set up some habits!</h1>
+
+<!-- simpler way -->
+<!--You have {n pass in this number from backend using jinja} habits set up!
+
+only show this form if they have available habit slots
+set up a habit form
+one at a time
+user clicks submit 
+on the back end, check if they have available habit slots
+if so, add a habit for them in the database!-->
+
+<!-- Alternate way -->
+<div id="foo">
   <form action="/habit" method="POST">
     <label for = "new_habits">Number of habits you want to set:</label>
          <select name="new_habits" id="new_habits">
@@ -22,7 +35,11 @@
          <input type="submit" value="Submit">
 {% endif %}  
 <!-- script tag for js file to evaluate number of habits chosen--> 
+<script>
+  "use strict"
 
+</script>
    
   </form>
+</div>
 {% endblock %}
