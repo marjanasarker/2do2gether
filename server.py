@@ -27,7 +27,7 @@ def register_user():
     last_name = request.form.get('lname')
     email = request.form.get('email')
     password = request.form.get('password')
-
+    #print(first_name, last_name, email, password)
     user = crud.get_user_by_email(email)
     
 
@@ -67,8 +67,17 @@ def regular_user_login():
 
 @app.route('/habit')
 def show_habit():
+    if session['user_id']:
+        user_habits = crud.get_habits_by_user(session['user_id'])
+        return render_template('habit.html', user_habits=user_habits)
+    else:
+        return redirect('/login')
 
-    return render_template('habit.html') 
+     
+#@app.route('/habit', methods=['POST'])
+#def create_new_habit():
+
+    #return render_template('habit.html') 
 
 if __name__ == '__main__':
     connect_to_db(app)
