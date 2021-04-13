@@ -3,5 +3,26 @@
 
 
 {% block body %}
+<head><script
+  src="http://code.jquery.com/jquery-3.5.1.js"
+  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+  crossorigin="anonymous"></script>
+</head>
 <h1>Habit Page</h1>
+{{user_habits}}
+{%if not user_habits%}
+<h1>Let's set up some habits!</h1>
+  <form action="/habit" method="POST">
+    <label for = "new_habits">Number of habits you want to set:</label>
+         <select name="new_habits" id="new_habits">
+           <option value='1'>1</option>
+           <option value='2'>2</option>
+           <option value='3'>3</option>
+         </select>
+         <input type="submit" value="Submit">
+{% endif %}  
+<!-- script tag for js file to evaluate number of habits chosen--> 
+
+   
+  </form>
 {% endblock %}
