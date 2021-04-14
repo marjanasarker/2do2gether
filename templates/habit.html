@@ -3,43 +3,37 @@
 
 
 {% block body %}
-<head><script
-  src="http://code.jquery.com/jquery-3.5.1.js"
-  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-  crossorigin="anonymous"></script>
-</head>
+
 <h1>Habit Page</h1>
-{{user_habits}}
-{%if not user_habits%}
-<h1>Let's set up some habits!</h1>
 
-<!-- simpler way -->
-<!--You have {n pass in this number from backend using jinja} habits set up!
+<h2>Let's set up some habits!</h2>
 
-only show this form if they have available habit slots
-set up a habit form
-one at a time
-user clicks submit 
-on the back end, check if they have available habit slots
-if so, add a habit for them in the database!-->
-
-<!-- Alternate way -->
-<div id="foo">
+ 
   <form action="/habit" method="POST">
-    <label for = "new_habits">Number of habits you want to set:</label>
-         <select name="new_habits" id="new_habits">
-           <option value='1'>1</option>
-           <option value='2'>2</option>
-           <option value='3'>3</option>
-         </select>
-         <input type="submit" value="Submit">
-{% endif %}  
-<!-- script tag for js file to evaluate number of habits chosen--> 
-<script>
-  "use strict"
+    
+         <p>
+           Habit name <input type='text' name='habit_name'>
+         </p>
+         <p>
+           Goal <input type='number' name='goal'>
+         </p>
+         <p>
+           Type of goal execution <input type='text' name='type_goal'>
+         </p>
+         <p>
+           Start date:<input type="date" name="start_date">
+         </p>
+         <p>
+          End date:<input type="date" name="end_date">
+        </p>
+         <p>
+           <input type="submit" value="Submit">
+         </p> 
+         
+        </form>
+  
 
-</script>
    
-  </form>
-</div>
+  
+
 {% endblock %}
