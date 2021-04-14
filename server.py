@@ -67,17 +67,34 @@ def regular_user_login():
 
 @app.route('/habit')
 def show_habit():
-    if session['user_id']:
-        user_habits = crud.get_habits_by_user(session['user_id'])
-        return render_template('habit.html', user_habits=user_habits)
-    else:
-        return redirect('/login')
+    #max_habits = 3
+    #if session['user_id']:
+        
+    return render_template('habit.html')
+    #else:
+        #return redirect('/login')
 
      
-#@app.route('/habit', methods=['POST'])
-#def create_new_habit():
+@app.route('/habit', methods=['POST'])
+def create_new_habit():
+    """Setting up new habits"""
+    #user_id = session['user_id'] 
+    goal = request.form.get('goal')
+    habit_name = request.form.get('habit_name')
+    type_goal = request.form.get('type_goal')
+    start_date = request.form.get('start_date')
+    end_date = request.form.get('end_date')
 
-    #return render_template('habit.html') 
+    num_habits=crud.get_number_of_habits(session['user_id'])
+    user_habits = crud.get_habits_by_user(session['user_id'])
+    print(user_habits)
+    if num_habits<3:
+        new_habit = crud.create_user_habit(session['user_id'],goal,habit_name,type_goal,start_date,end_date)
+    else:
+        flash('Reached limit for number of habits')
+        #return redirect('/')
+
+    return redirect('/habit') 
 
 if __name__ == '__main__':
     connect_to_db(app)
