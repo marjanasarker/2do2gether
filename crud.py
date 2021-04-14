@@ -10,9 +10,9 @@ def create_user(fname, lname, email, password):
     
     return user
 
-def create_user_habit(user, goal, name, type_of_execution, start_date, end_date):
+def create_user_habit(user_id, goal, name, type_of_execution, start_date, end_date):
     """Create and return a new habit set up"""
-    user_habit = User_habit(user=user, goal=goal, name=name, 
+    user_habit = User_habit(user_id=user_id, goal=goal, name=name, 
                            type_of_execution=type_of_execution, 
                            start_date=start_date, end_date=end_date)
 
@@ -66,9 +66,14 @@ def get_user_by_email(email):
     return User.query.filter(User.email == email).first()
 
 def get_habits_by_user(user_id):
+    """Return habits by user"""
 
     return User_habit.query.filter_by(user_id=user_id).all() 
 
+def get_number_of_habits(user_id):
+    """Returns number of habits user set up"""
+
+    return User_habit.query.filter_by(user_id=user_id).count()
 
 if __name__ == '__main__':
     from server import app
