@@ -28,10 +28,10 @@ def create_habit(habit_id, name):
     db.session.add(habit)
     db.session.commit()
 
-def create_habit_log(user_habit, journal_log, date_of, progress):
+def create_habit_log(user_habit, journal_log, date_of, log_in_time, progress):
     """Create and return a new log for habit completion"""
     habit_log = Habit_log(user_habit=user_habit, journal_log=journal_log, 
-                           date_of=date_of, progress=progress) #should I add progress?
+                           date_of=date_of, log_in_time=log_in_time, progress=progress) #should I add progress?
 
     db.session.add(habit_log)
     db.session.commit()
@@ -51,8 +51,8 @@ def create_journal_log(journal_entry):
 def create_messages(user_habit_id, sender_id, receiver_id, timestamp, message):
     """Create and return a new message"""
 
-    messages = Messages(user_habit_id=user_habit_id, sender_id=sender_id,
-                       receiver_id=receiver_id, timestamp=timestamp,
+    messages = Messages(user_habit_id=user_habit_id, sender_id=sender_id, 
+                       receiver_id=receiver_id, message_date=message_date,
                        message=message)
 
     db.session.add(messages)
@@ -74,6 +74,12 @@ def get_number_of_habits(user_id):
     """Returns number of habits user set up"""
 
     return User_habit.query.filter_by(user_id=user_id).count()
+
+#def user_habit_progress(user_habit_id):
+    #"""Return progress metric for user based on logged hours vs. user goal"""
+    
+    
+    #return Habit_log.query(Habit_log.log_in_time).group_by(user_habit_id=user_habit_id).sum()
 
 if __name__ == '__main__':
     from server import app
