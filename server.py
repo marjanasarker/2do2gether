@@ -73,6 +73,7 @@ def regular_user_login():
 def show_habit():
     #max_habits = 3
     #if session['user_id']:
+    #habits = 
         
     return render_template('habit.html')
     #else:
@@ -103,8 +104,9 @@ def create_new_habit():
 @app.route('/habit_display')
 def display_habits():
     "Display the habits user is set out to complete"
-
-    return render_template("habit_display.html")
+    user_habits = crud.get_habits_by_user(session['user_id'])
+    print(user_habits[2])
+    return render_template("habit_display.html", user_habits=user_habits)
 
 
 if __name__ == '__main__':
