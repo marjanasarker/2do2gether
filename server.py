@@ -57,8 +57,12 @@ def regular_user_login():
 
     if user and user.password == password:
         session['user_id'] = user.user_id
+        num_habits=crud.get_number_of_habits(session['user_id'])
         print(session)
-        return redirect('/habit')
+        if num_habits==3:
+            return redirect('/habit_display')
+        else:
+            return redirect('/habit')
     else:
         flash('Password or email address entered incorrectly, try again.')
 
@@ -78,7 +82,7 @@ def show_habit():
 @app.route('/habit', methods=['POST'])
 def create_new_habit():
     """Setting up new habits"""
-    #user_id = session['user_id'] 
+    
     goal = request.form.get('goal')
     habit_name = request.form.get('habit_name')
     type_goal = request.form.get('type_goal')
@@ -92,9 +96,16 @@ def create_new_habit():
         new_habit = crud.create_user_habit(session['user_id'],goal,habit_name,type_goal,start_date,end_date)
     else:
         flash('Reached limit for number of habits')
-        #return redirect('/')
+        return redirect('/habit_display')
 
     return redirect('/habit') 
+
+@app.route('/habit_display')
+def display_habits():
+    "Display the habits user is set out to complete"
+
+    return render_template("habit_display.html")
+
 
 if __name__ == '__main__':
     connect_to_db(app)
