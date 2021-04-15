@@ -71,7 +71,7 @@ class Habit_log(db.Model):
     journal_log = db.relationship('Journal_log', backref='habit_log')
 
     def __repr__(self):
-        return f'<Habit_log habit_log_id={self.habit_log_id} date_of={self.date_of} progress={self.progress}>'
+        return f'<Habit_log habit_log_id={self.habit_log_id} user_habit_id={self.user_habit_id} journal_id={self.journal_id} log_in_time={self.log_in_time} date_of={self.date_of} progress={self.progress}>'
 
 class Journal_log(db.Model):
     """Journal entries"""
@@ -102,7 +102,7 @@ class Messages(db.Model):
     
     
     def __repr__(self):
-        return f'<messages_id={self.messages_id} message={self.message}>'
+        return f'<Messages messages_id={self.messages_id} user_habit_id={self.user_habit_id} sender_id={self.sender_id} receiver_id={self.receiver_id} message_date={self.message_date} message={self.message}>'
 
 
 def connect_to_db(flask_app, db_uri='postgresql:///habits', echo=False):
