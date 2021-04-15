@@ -1,5 +1,6 @@
 """Create, Read, Update and Delete operations"""
 from model import db, User, User_habit, Habit, Habit_log, Journal_log, Messages, connect_to_db
+from sqlalchemy.sql import func
 
 def create_user(fname, lname, email, password):
     """Create and return a new user"""
@@ -48,7 +49,7 @@ def create_journal_log(journal_entry):
 
     return journal_log
 
-def create_messages(user_habit_id, sender_id, receiver_id, timestamp, message):
+def create_messages(user_habit_id, sender_id, receiver_id, message_date, message):
     """Create and return a new message"""
 
     messages = Messages(user_habit_id=user_habit_id, sender_id=sender_id, 
@@ -75,11 +76,12 @@ def get_number_of_habits(user_id):
 
     return User_habit.query.filter_by(user_id=user_id).count()
 
-#def user_habit_progress(user_habit_id):
-    #"""Return progress metric for user based on logged hours vs. user goal"""
+def user_habit_progress(user_habit_id):
+    """Return progress metric for user based on logged hours vs. user goal"""
     
     
-    #return Habit_log.query(Habit_log.log_in_time).group_by(user_habit_id=user_habit_id).sum()
+    return db.session.query(func.sum(Habit_log.log_in_time)).filter(Habit_log.user_habit_id == user_habit_id).first()
+
 
 if __name__ == '__main__':
     from server import app
