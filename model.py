@@ -9,14 +9,16 @@ class User(db.Model):
 
     __tablename__ = 'users'
 
-    user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer, autoincrement=True, primary_key=True, nullable=False)
     fname = db.Column(db.String(40))
     lname = db.Column(db.String(40))
     email = db.Column(db.String(40), unique = True)
     password = db.Column(db.String(8)) #how do you make the requirement alphanumeric
+    
+    #habits = db.relationship('User_habit')
 
     def __repr__(self):
-        return f'<User fname={self.fname} lname={self.lname} email={self.email}>'
+        return f'<User fname={self.fname} lname={self.lname} email={self.email} password={self.password}>'
 
 class User_habit(db.Model):
     """A user's habit description and other details"""
@@ -28,7 +30,7 @@ class User_habit(db.Model):
     habit_id = db.Column(db.Integer, db.ForeignKey('habit.habit_id'))
     accountability_partner_id = db.Column(db.Integer, db.ForeignKey('users.user_id')) 
     goal = db.Column(db.Integer)
-    completed = db.Column(db.Boolean)
+    completed = db.Column(db.Boolean) #default=False
     name = db.Column(db.String)
     type_of_execution = db.Column(db.String)
     start_date = db.Column(db.DateTime)
@@ -36,7 +38,7 @@ class User_habit(db.Model):
 
     user = db.relationship('User', foreign_keys=[user_id])
     accountability_user = db.relationship('User', foreign_keys=[accountability_partner_id])
-    habit = db.relationship('Habit')
+    habits = db.relationship('Habit', backref='user_habit')
 
 
     def __repr__(self):
@@ -62,7 +64,8 @@ class Habit_log(db.Model):
     user_habit_id = db.Column(db.Integer, db.ForeignKey('user_habit.user_habit_id'))
     journal_id = db.Column(db.Integer, db.ForeignKey('journal_log.journal_id'))
     date_of = db.Column(db.DateTime)
-    progress = db.Column(db.Numeric)
+    log_in_time = db.Column(db.Numeric) #how much time did the user put in day of
+    progress = db.Column(db.Numeric) #what the user starts with default
 
     user_habit = db.relationship('User_habit', backref='habit_log')
     journal_log = db.relationship('Journal_log', backref='habit_log')
@@ -90,10 +93,10 @@ class Messages(db.Model):
     user_habit_id = db.Column(db.Integer, db.ForeignKey('user_habit.user_habit_id'))
     sender_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     receiver_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    timestamp = db.Column(db.DateTime)
+    message_date = db.Column(db.DateTime)
     message = db.Column(db.Text)
 
-    sender = db.relationship('User', foreign_keys=[sender_id])
+    sender = db.relationship('User', foreign_keys=[sender_id]) #sender is an attribute to Messages
     receiver = db.relationship('User', foreign_keys=[receiver_id])
     user_habit = db.relationship('User_habit', backref='messages')
     
@@ -102,7 +105,7 @@ class Messages(db.Model):
         return f'<messages_id={self.messages_id} message={self.message}>'
 
 
-def connect_to_db(flask_app, db_uri='postgresql:///habits', echo=True):
+def connect_to_db(flask_app, db_uri='postgresql:///habits', echo=False):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     flask_app.config['SQLALCHEMY_ECHO'] = echo
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
