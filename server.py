@@ -105,8 +105,14 @@ def create_new_habit():
 def display_habits():
     "Display the habits user is set out to complete"
     user_habits = crud.get_habits_by_user(session['user_id'])
-    print(user_habits[2])
+    print(user_habits[0].name)
     return render_template("habit_display.html", user_habits=user_habits)
+
+#@app.route('/habit_log_display')
+#def display_track_habit_log():
+    #"A page for user to track each habit"
+
+
 
 
 if __name__ == '__main__':
