@@ -5,5 +5,8 @@
 {% block body %}
 <h1>Habits for this month!</h1>
 <h2>Click on habit to track progress</h2>
+{%for habit in user_habits%}
+<li><a href="/habit_log">{{ habit.name.upper() }}</a></li>
+{% endfor %}
 
 {% endblock %}
