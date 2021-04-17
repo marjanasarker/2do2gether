@@ -30,9 +30,9 @@ def create_habit(habit_id, name):
     db.session.add(habit)
     db.session.commit()
 
-def create_habit_log(user_habit_id, journal_log, date_of, log_in_time, progress):
+def create_habit_log(user_habit_id, journal_id, date_of, log_in_time, progress):
     """Create and return a new log for habit completion"""
-    habit_log = Habit_log(user_habit_id=user_habit_id, journal_log=journal_log, 
+    habit_log = Habit_log(user_habit_id=user_habit_id, journal_id=journal_id, 
                            date_of=date_of, log_in_time=log_in_time, progress=progress) #should I add progress?
 
     db.session.add(habit_log)
