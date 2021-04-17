@@ -115,7 +115,7 @@ def display_habits():
 @app.route('/habit_log_display/<habit_name>', methods=['GET','POST'])
 def display_track_habit_log(habit_name):
     "A page for user to track each habit"
-    
+    habit_name = habit_name
     user_habit_name = crud.get_user_habit_name(habit_name)
     print(user_habit_name)
     #habit_name = habit_name
@@ -130,7 +130,7 @@ def display_track_habit_log(habit_name):
     #journal_log = request.form.get('journal_entry')
     #journal_entry = crud.create_journal_log(journal_log)
     #new_habit_log = crud.create_habit_log(user_habit_id, journal_entry.journal_id, date_of, log_in_time, progress)
-    return render_template("habit_log_display.html", habit_name=habit_name)
+    return render_template("habit_log_display.html", user_habit_name=user_habit_name, habit_name=habit_name)
 
 
 
