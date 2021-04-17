@@ -112,25 +112,35 @@ def display_habits():
     
     return render_template("habit_display.html", user_habits=user_habits)
 
-@app.route('/habit_log_display/<habit_name>', methods=['GET','POST'])
-def display_track_habit_log(habit_name):
+@app.route('/habit_log_display/<habit_id')
+def display_habit_log(habit_id):
+    return render_template("habit_log_display.html", user_habit_name=user_habit_name, habit_id=habit_id, progress=progress)
+
+@app.route('/habit_log_display/<habit_id>', methods=['POST'])
+def display_track_habit_log(habit_id):
     "A page for user to track each habit"
-    habit_name = habit_name
-    user_habit_name = crud.get_user_habit_name(habit_name)
+    habit_id = habit_id
+    user_habit_name = crud.get_user_habit_name(habit_id)
     print(user_habit_name)
     #habit_name = habit_name
     #user_habit_log = crud.get_user_habit_log(habit_name)
     #print(user_habit_log)
     log_in_time = request.form.get('log_in_time')
     date_of = request.form.get('date_of') 
-    sum_logins = crud.get_user_habit_progress_sum(habit_name)
+    sum_logins = crud.get_user_habit_progress_sum(habit_id)
     print(sum_logins)
-    #habit_goal = crud.get_user_habit_goal(user_habit_id)
-    #progress = float(sum_logins/habit_goal)
-    #journal_log = request.form.get('journal_entry')
-    #journal_entry = crud.create_journal_log(journal_log)
-    #new_habit_log = crud.create_habit_log(user_habit_id, journal_entry.journal_id, date_of, log_in_time, progress)
-    return render_template("habit_log_display.html", user_habit_name=user_habit_name, habit_name=habit_name)
+    goal = crud.get_user_habit_goal(habit_id)
+    progress = float(sum_logins/goal)*100
+    journal_entry = request.form.get('journal_entry')
+    if user_habit_name:
+        journal_entry_today = crud.create_journal_log(journal_entry)
+        new_habit_log = crud.create_habit_log(habit_id, journal_entry_today.journal_id, date_of, log_in_time, progress)
+        flash('New login details created')
+        return redirect('/habit_log_display')
+    else:
+        flash('Habit does not exist')
+        
+    
 
 
 
