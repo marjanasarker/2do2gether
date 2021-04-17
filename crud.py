@@ -1,6 +1,7 @@
 """Create, Read, Update and Delete operations"""
 from model import db, User, User_habit, Habit, Habit_log, Journal_log, Messages, connect_to_db
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, cast
+import sqlalchemy
 
 def create_user(fname, lname, email, password):
     """Create and return a new user"""
@@ -29,9 +30,9 @@ def create_habit(habit_id, name):
     db.session.add(habit)
     db.session.commit()
 
-def create_habit_log(user_habit, journal_log, date_of, log_in_time, progress):
+def create_habit_log(user_habit_id, journal_log, date_of, log_in_time, progress):
     """Create and return a new log for habit completion"""
-    habit_log = Habit_log(user_habit=user_habit, journal_log=journal_log, 
+    habit_log = Habit_log(user_habit_id=user_habit_id, journal_log=journal_log, 
                            date_of=date_of, log_in_time=log_in_time, progress=progress) #should I add progress?
 
     db.session.add(habit_log)
@@ -76,12 +77,30 @@ def get_number_of_habits(user_id):
 
     return User_habit.query.filter_by(user_id=user_id).count()
 
-def user_habit_progress(user_habit_id):
+def get_user_habit_progress_sum(user_habit_id):
     """Return progress metric for user based on logged hours vs. user goal"""
     
-    
-    return db.session.query(func.sum(Habit_log.log_in_time)).filter(Habit_log.user_habit_id == user_habit_id).first()
+    sum_logins= db.session.query(func.sum(cast(Habit_log.log_in_time, sqlalchemy.Float)).filter(Habit_log.user_habit_id == user_habit_id)).scalar()
+    return sum_logins
 
+def get_user_habit_log(user_habit_id):
+    "Return habit_log for user's particular habit"
+
+    return Habit_log.query.filter(Habit_log.user_habit_id == user_habit_id).all()
+
+def get_user_habit_goal(user_habit_id):
+    "Return user habit details"
+
+    habit_details= User_habit.query.filter(User_habit.user_habit_id==user_habit_id).one()
+    habit_goal = habit_details.goal
+    #habit_goal = habit_details.query.filter(User_habit.goal).all()
+    return habit_goal
+
+def get_user_habit_name(user_habit_id):
+    "Return user habit name"
+    habit_details= User_habit.query.filter(User_habit.user_habit_id==user_habit_id).one()
+    habit_name = habit_details.name
+    return habit_name
 
 if __name__ == '__main__':
     from server import app
