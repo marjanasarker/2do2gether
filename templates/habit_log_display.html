@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}2do 2gether{% endblock %}
+
+
+{% block body %}
+<h1>Habit log</h1>
+<h2>Create a log for {{habit_name}} today</h2>
+<form action='/habit_display/{{habit_name}}', method='POST'>
+    <p>
+        Login_time <input type='text' name="log_in_time">
+    </p>
+    <p>
+        Date of activity <input type='date' name="date_of">
+    </p>
+    <p>
+        Journal entry <input type='text' name="journal_entry">
+    </p>
+    <p>
+    <input type = "submit">
+    </p>
+
+</form>
+
+
+
+{% endblock %}
