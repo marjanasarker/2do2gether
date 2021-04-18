@@ -15,7 +15,6 @@ def homepage():
 @app.route('/create_account')
 def show_newaccount_form(): 
 
-
     return render_template('create_account.html')
 
 
@@ -51,7 +50,6 @@ def regular_user_login():
 
     email = request.form.get('email')
     password = request.form.get('password')
-
     user = crud.get_user_by_email(email)
     
 
@@ -67,17 +65,14 @@ def regular_user_login():
         flash('Password or email address entered incorrectly, try again.')
 
     
-    return redirect('/login')  #change this
+    return redirect('/login') 
 
 @app.route('/habit')
 def show_habit():
-    #max_habits = 3
-    #if session['user_id']:
-    #habits = 
+    "Renders page where user can set up habits"
     
     return render_template('habit.html')
-    #else:
-        #return redirect('/login')
+    
 
      
 @app.route('/habit', methods=['POST'])
@@ -85,16 +80,23 @@ def create_new_habit():
     """Setting up new habits"""
     
     goal = request.form.get('goal')
-    habit_name = request.form.get('habit_name')
+    habit_name = request.form.get('habit_name').lower()
     type_goal = request.form.get('type_goal')
     start_date = request.form.get('start_date')
     end_date = request.form.get('end_date')
 
     num_habits=crud.get_number_of_habits(session['user_id'])
     user_habits = crud.get_habits_by_user(session['user_id'])
-    print(user_habits)
+
+    if habit_name in crud.get_habits():
+        habit_id = crud.get_habit_id(habit_name)
+    else:
+        crud.create_habit(habit_name)
+        habit_id = crud.get_habit_id(habit_name)
+    #print(user_habits)
+
     if num_habits<3:
-        new_habit = crud.create_user_habit(session['user_id'],goal,habit_name,type_goal,start_date,end_date)
+        new_habit = crud.create_user_habit(session['user_id'],habit_id,goal,habit_name,type_goal,start_date,end_date)
     else:
         flash('Reached limit for number of habits')
         return redirect('/habit_display')
@@ -106,40 +108,40 @@ def display_habits():
     "Display the habits user is set out to complete"
     
     user_habits = crud.get_habits_by_user(session['user_id'])
-    print(user_habits)
-    #session['user_habit_id']=user_habits.user_habit_id
-    #print(session)
-    
+    #print(user_habits)
+        
     return render_template("habit_display.html", user_habits=user_habits)
 
-@app.route('/habit_log_display/<habit_id')
+@app.route('/habit_log_display/<habit_id>')
 def display_habit_log(habit_id):
+    "Renders habit tracking page and shows progress made so far"
+    
+    habit_id = habit_id
+    user_habit_name = crud.get_user_habit_name(habit_id)
+    sum_logins = crud.get_user_habit_progress_sum(habit_id)
+    #print(sum_logins)
+    goal = crud.get_user_habit_goal(habit_id)
+
+    if sum_logins:
+        progress = float(sum_logins/goal)*100
+    else:
+        progress = 0
+
     return render_template("habit_log_display.html", user_habit_name=user_habit_name, habit_id=habit_id, progress=progress)
 
 @app.route('/habit_log_display/<habit_id>', methods=['POST'])
 def display_track_habit_log(habit_id):
-    "A page for user to track each habit"
+    "Function to create new habit_log for user's habit"
+    
     habit_id = habit_id
-    user_habit_name = crud.get_user_habit_name(habit_id)
-    print(user_habit_name)
-    #habit_name = habit_name
-    #user_habit_log = crud.get_user_habit_log(habit_name)
-    #print(user_habit_log)
     log_in_time = request.form.get('log_in_time')
     date_of = request.form.get('date_of') 
-    sum_logins = crud.get_user_habit_progress_sum(habit_id)
-    print(sum_logins)
-    goal = crud.get_user_habit_goal(habit_id)
-    progress = float(sum_logins/goal)*100
-    journal_entry = request.form.get('journal_entry')
-    if user_habit_name:
-        journal_entry_today = crud.create_journal_log(journal_entry)
-        new_habit_log = crud.create_habit_log(habit_id, journal_entry_today.journal_id, date_of, log_in_time, progress)
-        flash('New login details created')
-        return redirect('/habit_log_display')
-    else:
-        flash('Habit does not exist')
-        
+    journal_entry=request.form.get('journal_entry')
+    journal_entry_today = crud.create_journal_log(journal_entry)
+    new_habit_log = crud.create_habit_log(habit_id, journal_entry_today.journal_id, date_of, log_in_time)
+    flash('New habit login details recorded, would you like to login another habit?')
+    
+    return redirect('/habit_display')
     
 
 
