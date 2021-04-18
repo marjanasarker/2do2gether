@@ -5,7 +5,7 @@
 {% block body %}
 <h1>Habit log</h1>
 <h2>Create a log for {{user_habit_name}} today</h2>
-<form action='/habit_display/{{habit_name}}', method='POST'>
+<form action='/habit_log_display/{{habit_id}}', method='POST'>
     <p>
         Login_time <input type='text' name="log_in_time">
     </p>
@@ -18,8 +18,12 @@
     <p>
     <input type = "submit">
     </p>
+    
 
 </form>
+<p>Progress {{progress}}%</p>
+<a href='/habit_display'>Back to Habit Display</a>
+
 
 
 
