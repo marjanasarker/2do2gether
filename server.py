@@ -9,12 +9,12 @@ app.jinja_env.undefined = StrictUndefined
 
 @app.route('/')
 def homepage():
-    
+    """Homepage of app"""
     return render_template('homepage.html')
 
 @app.route('/create_account')
 def show_newaccount_form(): 
-
+    """Renders page where user can create new account"""
     return render_template('create_account.html')
 
 
@@ -26,7 +26,7 @@ def register_user():
     last_name = request.form.get('lname')
     email = request.form.get('email')
     password = request.form.get('password')
-    #print(first_name, last_name, email, password)
+
     user = crud.get_user_by_email(email)
     
 
@@ -42,11 +42,13 @@ def register_user():
     #return render_template('login.html')
 @app.route('/login')
 def show_login():
+    """Renders page where user can login"""
 
     return render_template('login.html')
 
 @app.route('/login', methods=['POST'])
 def regular_user_login():
+    """Check if user exists, and redirect to create new habit if they have less than 3 habits setup"""
 
     email = request.form.get('email')
     password = request.form.get('password')
@@ -69,7 +71,7 @@ def regular_user_login():
 
 @app.route('/habit')
 def show_habit():
-    "Renders page where user can set up habits"
+    """Renders page where user can set up habits"""
     
     return render_template('habit.html')
     
@@ -105,7 +107,7 @@ def create_new_habit():
 
 @app.route('/habit_display')
 def display_habits():
-    "Display the habits user is set out to complete"
+    """Display the habits user is set out to complete"""
     
     user_habits = crud.get_habits_by_user(session['user_id'])
     #print(user_habits)
@@ -114,7 +116,7 @@ def display_habits():
 
 @app.route('/habit_log_display/<habit_id>')
 def display_habit_log(habit_id):
-    "Renders habit tracking page and shows progress made so far"
+    """Renders habit tracking page and shows progress made so far"""
     
     habit_id = habit_id
     user_habit_name = crud.get_user_habit_name(habit_id)
@@ -131,7 +133,7 @@ def display_habit_log(habit_id):
 
 @app.route('/habit_log_display/<habit_id>', methods=['POST'])
 def display_track_habit_log(habit_id):
-    "Function to create new habit_log for user's habit"
+    """Function to create new habit_log for user's habit"""
     
     habit_id = habit_id
     log_in_time = request.form.get('log_in_time')
