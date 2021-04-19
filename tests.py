@@ -11,6 +11,9 @@ class FlaskTests(TestCase):
         
         self.client = app.test_client()
         app.config['TESTING'] = True
+
+        """Connected to production db now, will be changed"""
+        connect_to_db(app, "postgresql:///habits")
         
     def test_index(self):
         """Testing homepage"""
@@ -18,13 +21,13 @@ class FlaskTests(TestCase):
         result = self.client.get("/")
         self.assertIn(b"Welcome!", result.data)
     
-    # def test_login(self):
-    #     """Tests the login page"""
+    def test_login(self):
+        """Tests the login page"""
 
-    #     result = self.client.post('/login', 
-    #                                 data={"email":"andrew.gerber@gmail.com", "password": "and123"}, 
-    #                                 follow_redirects=True)
-    #     self.assertIn(b'<h1>Habit Page</h1>', result.data)                            
+        result = self.client.post('/login', 
+                                    data={"email":"andrew.gerber@gmail.com", "password": "and123"}, 
+                                    follow_redirects=True)
+        self.assertIn(b'<h1>Habits for this month!</h1>', result.data)                            
 
 if __name__ == "__main__":
     import unittest
