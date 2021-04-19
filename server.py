@@ -145,7 +145,14 @@ def display_track_habit_log(habit_id):
     
     return redirect('/habit_display')
     
+@app.route('/logout')
+def logout():
+    """User must be logged in to use logout"""
 
+    del session['user_id']
+    flash("You have been logged out")
+
+    return redirect('/login')
 
 
 if __name__ == '__main__':
