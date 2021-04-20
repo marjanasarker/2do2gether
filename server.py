@@ -73,7 +73,13 @@ def regular_user_login():
 def show_habit():
     """Renders page where user can set up habits"""
     
-    return render_template('habit.html')
+    num_habits=crud.get_number_of_habits(session['user_id'])
+    
+    if num_habits:
+        num_habits=num_habits
+    else:
+        num_habits=0
+    return render_template('habit.html', num_habits=num_habits)
     
 
      
@@ -84,6 +90,7 @@ def create_new_habit():
     goal = request.form.get('goal')
     habit_name = request.form.get('habit_name').lower()
     type_goal = request.form.get('type_goal')
+    print(type_goal)
     start_date = request.form.get('start_date')
     end_date = request.form.get('end_date')
 
@@ -99,6 +106,7 @@ def create_new_habit():
 
     if num_habits<3:
         new_habit = crud.create_user_habit(session['user_id'],habit_id,goal,habit_name,type_goal,start_date,end_date)
+    
     else:
         flash('Reached limit for number of habits')
         return redirect('/habit_display')
@@ -110,9 +118,13 @@ def display_habits():
     """Display the habits user is set out to complete"""
     
     user_habits = crud.get_habits_by_user(session['user_id'])
-    #print(user_habits)
-        
-    return render_template("habit_display.html", user_habits=user_habits)
+    num_habits=crud.get_number_of_habits(session['user_id'])
+    if num_habits<3:
+        num_habit=3-num_habits
+    else:
+        num_habit=0
+      
+    return render_template("habit_display.html", user_habits=user_habits, num_habit=num_habit)
 
 @app.route('/habit_log_display/<habit_id>')
 def display_habit_log(habit_id):
