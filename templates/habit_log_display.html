@@ -5,13 +5,14 @@
 {% block body %}
 <h1>Habit log</h1>
 <h2>Create a log for {{user_habit_name}} today</h2>
-<form action='/habit_log_display/{{habit_id}}', method='POST'>
+<p>
+    Date of activity: {{date_of}}
+</p>
+<form action='/habit_log_display/{{user_habit_id}}', method='POST'>
     <p>
         Login_time <input type='text' name="log_in_time">
     </p>
-    <p>
-        Date of activity <input type='date' name="date_of">
-    </p>
+    
     <p>
         Journal entry <input type='text' name="journal_entry">
     </p>
