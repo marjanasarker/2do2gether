@@ -1,5 +1,6 @@
 from flask import Flask, request, flash, session, redirect, render_template
 from model import connect_to_db
+from datetime import datetime, date
 import crud
 from jinja2 import StrictUndefined
 
@@ -90,7 +91,7 @@ def create_new_habit():
     goal = request.form.get('goal')
     habit_name = request.form.get('habit_name').lower()
     type_goal = request.form.get('type_goal')
-    print(type_goal)
+    
     start_date = request.form.get('start_date')
     end_date = request.form.get('end_date')
 
@@ -126,34 +127,46 @@ def display_habits():
       
     return render_template("habit_display.html", user_habits=user_habits, num_habit=num_habit)
 
-@app.route('/habit_log_display/<habit_id>')
-def display_habit_log(habit_id):
+@app.route('/habit_log_display/<user_habit_id>')
+def display_habit_log(user_habit_id):
     """Renders habit tracking page and shows progress made so far"""
     
-    habit_id = habit_id
-    user_habit_name = crud.get_user_habit_name(habit_id)
-    sum_logins = crud.get_user_habit_progress_sum(habit_id)
+    user_habit_id = user_habit_id
+    user_habit_name = crud.get_user_habit_name(user_habit_id)
+    sum_logins = crud.get_user_habit_progress_sum(user_habit_id)
     #print(sum_logins)
-    goal = crud.get_user_habit_goal(habit_id)
-
+    goal = crud.get_user_habit_goal(user_habit_id)
+    date_of = date.today()
     if sum_logins:
         progress = float(sum_logins/goal)*100
     else:
         progress = 0
 
-    return render_template("habit_log_display.html", user_habit_name=user_habit_name, habit_id=habit_id, progress=progress)
+    return render_template("habit_log_display.html", user_habit_name=user_habit_name, user_habit_id=user_habit_id, progress=progress, date_of=date_of)
 
-@app.route('/habit_log_display/<habit_id>', methods=['POST'])
-def display_track_habit_log(habit_id):
+@app.route('/habit_log_display/<user_habit_id>', methods=['POST'])
+def display_track_habit_log(user_habit_id):
     """Function to create new habit_log for user's habit"""
     
-    habit_id = habit_id
+    user_habit_id = user_habit_id
+    print(user_habit_id)
+    #user_habit_name = crud.get_user_habit_name(user_habit_id)
     log_in_time = request.form.get('log_in_time')
-    date_of = request.form.get('date_of') 
+    date_of = date.today()
+    print(date_of)
+    date_logs = crud.get_user_habit_log_dates(user_habit_id)
+    print(date_logs)
     journal_entry=request.form.get('journal_entry')
-    journal_entry_today = crud.create_journal_log(journal_entry)
-    new_habit_log = crud.create_habit_log(habit_id, journal_entry_today.journal_id, date_of, log_in_time)
-    flash('New habit login details recorded, would you like to login another habit?')
+    if str(date_of) not in date_logs:
+        journal_entry_today = crud.create_journal_log(journal_entry)
+        new_habit_log = crud.create_habit_log(user_habit_id, journal_entry_today.journal_id, date_of, log_in_time)
+        flash('New habit login details recorded, would you like to login another habit?')
+    else:
+        flash('Log not recorded')
+        flash('Log for this habit already created for today')
+        return display_habit_log(user_habit_id)
+
+    
     
     return redirect('/habit_display')
     
@@ -164,7 +177,7 @@ def logout():
     del session['user_id']
     flash("You have been logged out")
 
-    return redirect('/login')
+    return redirect('/')
 
 
 if __name__ == '__main__':
