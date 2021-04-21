@@ -68,7 +68,7 @@ def get_user_by_email(email):
     return User.query.filter(User.email == email).first()
 
 def get_habits():
-    """Returns all habits in database in a list"""
+    """Returns all habits from database in a list"""
 
     habits_in_db = db.session.query(Habit.name).all()
     habits_in_list = [habit for (habit,) in habits_in_db]
@@ -80,6 +80,25 @@ def get_habit_id(habit_name):
     user_habit = Habit.query.filter(Habit.name == habit_name).first()
     return user_habit.habit_id
 
+def get_user_name_habit(habit_name):
+    """Returns list of user full name with same habits"""
+
+    same_habit_user = User_habit.query.filter_by(name=habit_name).all()
+    same_habit_users_id = []
+    
+    same_habit_users_name = []
+    for users in same_habit_user:
+        same_habit_users_id.append(users.user_id)
+    
+    for user in same_habit_users_id:
+        user_details = User.query.filter_by(user_id=user).one()
+        
+        fname=user_details.fname
+        lname=user_details.lname
+        name = fname+' '+lname
+        same_habit_users_name.append(name)
+    return(same_habit_users_name)
+    
 def get_habits_by_user(user_id):
     """Return habits by user"""
 
