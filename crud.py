@@ -1,6 +1,7 @@
 """Create, Read, Update and Delete operations"""
 from model import db, User, User_habit, Habit, Habit_log, Journal_log, Messages, connect_to_db
 from sqlalchemy.sql import func, cast
+from datetime import datetime, date
 import sqlalchemy
 
 def create_user(fname, lname, email, password):
@@ -119,6 +120,16 @@ def get_user_habit_log(user_habit_id):
     "Return habit_log for user's particular habit"
 
     return Habit_log.query.filter(Habit_log.user_habit_id == user_habit_id).all()
+
+def get_user_habit_log_dates(user_habit_id):
+    """Return dates of habit_log"""
+
+    list_habit_log = Habit_log.query.filter(Habit_log.user_habit_id == user_habit_id).all()
+    date_of_habit_log = []
+    for log in list_habit_log:
+        date = log.date_of.strftime('%Y-%m-%d')
+        date_of_habit_log.append(date)
+    return date_of_habit_log
 
 def get_user_habit_goal(user_habit_id):
     "Return user habit details"
