@@ -1,6 +1,6 @@
 from flask import Flask, request, flash, session, redirect, render_template
 from model import connect_to_db
-from datetime import datetime, date
+from datetime import datetime, date, timedelta 
 import crud
 from jinja2 import StrictUndefined
 
@@ -154,6 +154,8 @@ def display_track_habit_log(user_habit_id):
     log_in_time = request.form.get('log_in_time')
     date_of = date.today()
     print(date_of)
+    time_added = timedelta(days=7)
+    print(date_of + time_added)
     date_logs = crud.get_user_habit_log_dates(user_habit_id)
     print(date_logs)
     journal_entry=request.form.get('journal_entry')
@@ -169,7 +171,8 @@ def display_track_habit_log(user_habit_id):
     
     
     return redirect('/habit_display')
-    
+
+#@app.route('/habit_progress/<user_habit_id>')    
 @app.route('/logout')
 def logout():
     """User must be logged in to use logout"""
