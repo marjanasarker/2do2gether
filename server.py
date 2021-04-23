@@ -129,7 +129,7 @@ def display_habits():
 
 @app.route('/habit_log_display/<user_habit_id>')
 def display_habit_log(user_habit_id):
-    """Renders habit tracking page and shows progress made so far"""
+    """Renders habit logging page and also shows progress made so far"""
     
     user_habit_id = user_habit_id
     user_habit_name = crud.get_user_habit_name(user_habit_id)
@@ -172,7 +172,27 @@ def display_track_habit_log(user_habit_id):
     
     return redirect('/habit_display')
 
-#@app.route('/habit_progress/<user_habit_id>')    
+@app.route('/habit_progress/<user_habit_id>') 
+def user_habit_progress(user_habit_id):
+    """Renders habit tracking page and shows progress made so far and number of days left to meet goal"""
+    
+    user_habit_id = user_habit_id
+    user_habit_name = crud.get_user_habit_name(user_habit_id)
+    sum_logins = crud.get_user_habit_progress_sum(user_habit_id)
+    print(sum_logins)
+    goal = crud.get_user_habit_goal(user_habit_id)
+    date_of = date.today()
+    #first_log = crud.get_user_habit_log_dates(user_habit_id)[0]
+    end_date = crud.get_user_habit_end_date(user_habit_id).date()
+    days_left = (end_date-date_of).days
+    #print(days_left.days)
+    #print(type(days_left))
+    if sum_logins:
+        progress = float(sum_logins/goal)*100
+    else:
+        progress = 0
+    return render_template("habit_progress.html", progress=progress, user_habit_name=user_habit_name, days_left=days_left)
+
 @app.route('/logout')
 def logout():
     """User must be logged in to use logout"""
