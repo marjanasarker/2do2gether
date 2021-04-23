@@ -121,14 +121,14 @@ def get_user_habit_log(user_habit_id):
 
     return Habit_log.query.filter(Habit_log.user_habit_id == user_habit_id).all()
 
-def get_user_habit_log_dates(user_habit_id):
+# def get_user_habit_log_dates(user_habit_id):
 
-    habit_log = get_user_habit_log(user_habit_id)
-    log_dates=[]
-    for logs in habit_log:
-        date = logs.date_of
-        log_dates.append(date)
-    return log_dates
+#     habit_log = get_user_habit_log(user_habit_id)
+#     log_dates=[]
+#     for logs in habit_log:
+#         date = logs.date_of
+#         log_dates.append(date)
+#     return log_dates
 
 
 def get_user_habit_log_dates(user_habit_id):
@@ -142,7 +142,7 @@ def get_user_habit_log_dates(user_habit_id):
     return date_of_habit_log
 
 def get_user_habit_goal(user_habit_id):
-    "Return user habit details"
+    """Return user habit details"""
 
     habit_details= User_habit.query.filter(User_habit.user_habit_id==user_habit_id).one()
     habit_goal = habit_details.goal
