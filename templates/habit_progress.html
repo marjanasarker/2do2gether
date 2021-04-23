@@ -5,7 +5,19 @@
 {% block body %}
 <h2>{{user_habit_name[0].upper()}}{{user_habit_name[1:]}} progress: {{progress}}%</h2>
 <h3>You have {{days_left}} days left to meet goal </h3>
+<h3>Your logs for this habit</h3>
+<p>
+{% for x,y in log_date|zip(journal_entries)%}
+<dl>
+ <dt>Your journal entry for {{x}}</dt>
+ <dd>: {{y}}</dd>
+</dl>
+ {%endfor%}
+</p>
 <p>
     <a href='/habit_display'>Back to your dashboard</a>
 </p>
+
+
+
 {% endblock %} 
