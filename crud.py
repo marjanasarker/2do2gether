@@ -117,9 +117,19 @@ def get_user_habit_progress_sum(user_habit_id):
     return sum_logins
 
 def get_user_habit_log(user_habit_id):
-    "Return habit_log for user's particular habit"
+    """Return habit_log for user's particular habit"""
 
     return Habit_log.query.filter(Habit_log.user_habit_id == user_habit_id).all()
+
+def get_user_habit_log_dates(user_habit_id):
+
+    habit_log = get_user_habit_log(user_habit_id)
+    log_dates=[]
+    for logs in habit_log:
+        date = logs.date_of
+        log_dates.append(date)
+    return log_dates
+
 
 def get_user_habit_log_dates(user_habit_id):
     """Return dates of habit_log"""
@@ -138,6 +148,14 @@ def get_user_habit_goal(user_habit_id):
     habit_goal = habit_details.goal
     #habit_goal = habit_details.query.filter(User_habit.goal).all()
     return habit_goal
+
+def get_user_habit_end_date(user_habit_id):
+    """Return when the 30 days for habit ends"""
+    
+    habit_details = User_habit.query.filter(User_habit.user_habit_id==user_habit_id).one()
+    end_date = habit_details.end_date
+    return end_date
+
 
 def get_user_habit_name(user_habit_id):
     "Return user habit name"
