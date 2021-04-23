@@ -3,15 +3,15 @@
 
 
 {% block body %}
-<h1>Habits for this month!</h1>
+<h1>Welcome to your dashboard!</h1>
 <h2>Click on habit to track progress</h2>
 
 {%for habit in user_habits%}
-<li>{{ habit.name.upper() }} <a href='/habit_log_display/{{habit.user_habit_id}}'>Log</a> <a href='/habit_progress/{{habit.user_habit_id}}'>Track progress</a></li>
+<li>{{ habit.name.upper() }} <a href='/habit_log_display/{{habit.user_habit_id}}'>Log</a>, <a href='/habit_progress/{{habit.user_habit_id}}'>Track progress</a></li>
 {% endfor %}
 
 <p>
-    You have {{num_habit}} more to set up
+    You have {{num_habit}} more habits to set up
     
 </p>
 <p> 
