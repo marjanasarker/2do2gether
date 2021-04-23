@@ -1,5 +1,5 @@
 """Models for 2do 2gether"""
-from datetime import datetime
+from datetime import datetime, date
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -33,8 +33,8 @@ class User_habit(db.Model):
     completed = db.Column(db.Boolean) #default=False
     name = db.Column(db.String)
     type_of_execution = db.Column(db.String)
-    start_date = db.Column(db.DateTime)
-    end_date = db.Column(db.DateTime)
+    start_date = db.Column(db.Date)
+    end_date = db.Column(db.Date)
 
     user = db.relationship('User', foreign_keys=[user_id])
     accountability_user = db.relationship('User', foreign_keys=[accountability_partner_id])
