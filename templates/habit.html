@@ -16,11 +16,15 @@
            Habit name <input type='text' name='habit_name'>
          </p>
          <p>
-           Goal <input type='number' name='goal'>
+           <label for="execution">Type of goal execution</label>
+            <select name="type_goal" id="type_goal">
+            <option value="hours">Hours</option>
+            <option value="days">Days</option>
+            </select>
          </p>
          <p>
-           Type of goal execution <input type='text' name='type_goal'>
-         </p>
+          Goal <input type='number' name='goal'>
+        </p>
          <p>
            Start date:<input type="date" name="start_date">
          </p>
@@ -33,8 +37,8 @@
          
         </form>
   
-
-<a href='/habit_display'>Back to Habit Display</a>   
+<p>{{num_habits}} habits created</p>
+<a href='/habit_display'>Back to your dashboard</a>   
   
 
 {% endblock %}
