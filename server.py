@@ -7,6 +7,7 @@ from jinja2 import StrictUndefined
 app = Flask(__name__)
 app.secret_key = "dev"
 app.jinja_env.undefined = StrictUndefined
+app.jinja_env.filters['zip'] = zip
 
 @app.route('/')
 def homepage():
@@ -120,6 +121,7 @@ def display_habits():
     
     user_habits = crud.get_habits_by_user(session['user_id'])
     num_habits=crud.get_number_of_habits(session['user_id'])
+    user_
     if num_habits<3:
         num_habit=3-num_habits
     else:
@@ -179,19 +181,19 @@ def user_habit_progress(user_habit_id):
     user_habit_id = user_habit_id
     user_habit_name = crud.get_user_habit_name(user_habit_id)
     sum_logins = crud.get_user_habit_progress_sum(user_habit_id)
-    print(sum_logins)
     goal = crud.get_user_habit_goal(user_habit_id)
     date_of = date.today()
-    #first_log = crud.get_user_habit_log_dates(user_habit_id)[0]
     end_date = crud.get_user_habit_end_date(user_habit_id).date()
     days_left = (end_date-date_of).days
-    #print(days_left.days)
-    #print(type(days_left))
+    
+    journal_entries = crud.get_journal_entries_by_user_habit(user_habit_id)
+    log_date = crud.get_user_habit_log_dates(user_habit_id)
+    
     if sum_logins:
         progress = float(sum_logins/goal)*100
     else:
         progress = 0
-    return render_template("habit_progress.html", progress=progress, user_habit_name=user_habit_name, days_left=days_left)
+    return render_template("habit_progress.html", progress=progress, user_habit_name=user_habit_name, days_left=days_left, journal_entries=journal_entries, log_date=log_date)
 
 @app.route('/logout')
 def logout():
