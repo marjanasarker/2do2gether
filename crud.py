@@ -68,6 +68,12 @@ def get_user_by_email(email):
 
     return User.query.filter(User.email == email).first()
 
+def get_user_by_id(user_id):
+    """Returns user's name with user id"""
+
+    user_details = User.query.filter(User.user_id == user_id).first()
+    return user_details.fname
+
 def get_habits():
     """Returns all habits from database in a list"""
 
@@ -129,7 +135,24 @@ def get_user_habit_log(user_habit_id):
 #         date = logs.date_of
 #         log_dates.append(date)
 #     return log_dates
+def get_user_journal_entries(journal_id):
+    """Return journal entries using journal id"""
 
+    journal_log =  Journal_log.query.filter_by(journal_id=journal_id).one()
+    return journal_log.journal_entry
+
+def get_journal_entries_by_user_habit(user_habit_id):
+    """Return journal entries based on journal ids from user's habit log"""
+
+    habit_log = get_user_habit_log(user_habit_id)
+    journal_ids = []
+    journal_entries=[]
+    for user in habit_log:
+        journal_ids.append(user.journal_id)
+    for ids in journal_ids:
+        journal_entries.append(get_user_journal_entries(ids))
+
+    return journal_entries
 
 def get_user_habit_log_dates(user_habit_id):
     """Return dates of habit_log"""
@@ -158,7 +181,8 @@ def get_user_habit_end_date(user_habit_id):
 
 
 def get_user_habit_name(user_habit_id):
-    "Return user habit name"
+    """Return user habit name"""
+
     habit_details= User_habit.query.filter(User_habit.user_habit_id==user_habit_id).one()
     habit_name = habit_details.name
     return habit_name
