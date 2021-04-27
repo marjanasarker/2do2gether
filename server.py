@@ -17,6 +17,7 @@ def homepage():
 @app.route('/create_account')
 def show_newaccount_form(): 
     """Renders page where user can create new account"""
+
     return render_template('create_account.html')
 
 
@@ -77,6 +78,7 @@ def show_habit():
     
     num_habits=crud.get_number_of_habits(session['user_id'])
     
+    
     if num_habits:
         num_habits=num_habits
     else:
@@ -104,8 +106,7 @@ def create_new_habit():
     else:
         crud.create_habit(habit_name)
         habit_id = crud.get_habit_id(habit_name)
-    #print(user_habits)
-
+    
     if num_habits<3:
         new_habit = crud.create_user_habit(session['user_id'],habit_id,goal,habit_name,type_goal,start_date,end_date)
     
@@ -121,13 +122,14 @@ def display_habits():
     
     user_habits = crud.get_habits_by_user(session['user_id'])
     num_habits=crud.get_number_of_habits(session['user_id'])
-    user_
+    user_name = crud.get_user_by_id(session['user_id'])
+    
     if num_habits<3:
         num_habit=3-num_habits
     else:
         num_habit=0
       
-    return render_template("habit_display.html", user_habits=user_habits, num_habit=num_habit)
+    return render_template("habit_display.html", user_habits=user_habits, num_habit=num_habit, user_name=user_name)
 
 @app.route('/habit_log_display/<user_habit_id>')
 def display_habit_log(user_habit_id):
@@ -135,10 +137,12 @@ def display_habit_log(user_habit_id):
     
     user_habit_id = user_habit_id
     user_habit_name = crud.get_user_habit_name(user_habit_id)
+
     sum_logins = crud.get_user_habit_progress_sum(user_habit_id)
-    #print(sum_logins)
     goal = crud.get_user_habit_goal(user_habit_id)
+
     date_of = date.today()
+    
     if sum_logins:
         progress = float(sum_logins/goal)*100
     else:
@@ -154,13 +158,13 @@ def display_track_habit_log(user_habit_id):
     print(user_habit_id)
     #user_habit_name = crud.get_user_habit_name(user_habit_id)
     log_in_time = request.form.get('log_in_time')
-    date_of = date.today()
-    print(date_of)
-    time_added = timedelta(days=7)
-    print(date_of + time_added)
-    date_logs = crud.get_user_habit_log_dates(user_habit_id)
-    print(date_logs)
     journal_entry=request.form.get('journal_entry')
+
+    date_of = date.today()
+    time_added = timedelta(days=7)
+    date_logs = crud.get_user_habit_log_dates(user_habit_id)
+    
+    
     if str(date_of) not in date_logs:
         journal_entry_today = crud.create_journal_log(journal_entry)
         new_habit_log = crud.create_habit_log(user_habit_id, journal_entry_today.journal_id, date_of, log_in_time)
@@ -180,9 +184,11 @@ def user_habit_progress(user_habit_id):
     
     user_habit_id = user_habit_id
     user_habit_name = crud.get_user_habit_name(user_habit_id)
+
     sum_logins = crud.get_user_habit_progress_sum(user_habit_id)
     goal = crud.get_user_habit_goal(user_habit_id)
     date_of = date.today()
+
     end_date = crud.get_user_habit_end_date(user_habit_id).date()
     days_left = (end_date-date_of).days
     
@@ -203,6 +209,19 @@ def logout():
     flash("You have been logged out")
 
     return redirect('/')
+
+@app.route('/messages/<user_habit_id>')
+def display_accountability_page(user_habit_id):
+    """Rendering an accountability partner setup and messages page"""
+
+    user_name = crud.get_user_by_id(session['user_id'])
+    user_habit_id = user_habit_id
+    user_habit_name = crud.get_user_habit_name(user_habit_id)
+   
+   
+    return render_template("messages.html", user_name=user_name, user_habit_name=user_habit_name)
+
+#@app.route('/messages/<user_habit_id>', methods=['POST'])
 
 
 if __name__ == '__main__':
