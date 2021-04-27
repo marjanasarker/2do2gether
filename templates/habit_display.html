@@ -3,11 +3,12 @@
 
 
 {% block body %}
-<h1>Welcome to your dashboard!</h1>
-<h2>Click on habit to track progress</h2>
+<h1>Welcome to your dashboard, {{user_name}}!</h1>
+<div>
+
 
 {%for habit in user_habits%}
-<li>{{ habit.name.upper() }} <a href='/habit_log_display/{{habit.user_habit_id}}'>Log</a>, <a href='/habit_progress/{{habit.user_habit_id}}'>Track progress</a></li>
+<li>{{ habit.name.upper() }} <a href='/habit_log_display/{{habit.user_habit_id}}'>Log</a>, <a href='/habit_progress/{{habit.user_habit_id}}'>Track Progress</a>, <a href='/messages/{{habit.user_habit_id}}'>Accountability</a> </li>
 {% endfor %}
 
 <p>
@@ -19,5 +20,10 @@
     <a href='/habit'>Set it up here!</a>
     {%endif%}
 </p>
+</div>
+
+<div>
+   
+</div>
 
 {% endblock %}
