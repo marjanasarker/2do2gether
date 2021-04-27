@@ -222,6 +222,17 @@ def display_accountability_page(user_habit_id):
     return render_template("messages.html", user_name=user_name, user_habit_name=user_habit_name)
 
 #@app.route('/messages/<user_habit_id>', methods=['POST'])
+#def partner_set_up(user_habit_id):
+#  """Setting up accountability partners and sending messages"""
+#     email = request.form.get('email')
+#     messages = request.form.get('messages')
+#
+#     user_habit_id = user_habit_id
+#     sender_id = session['user_id']
+#     user_name = crud.get_user_by_id(session['user_id'])
+#     receiver_id = crud.get_user_by_email(email).user_id
+#       
+#     
 
 
 if __name__ == '__main__':
