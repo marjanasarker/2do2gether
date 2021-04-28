@@ -5,17 +5,25 @@
 {% block body %}
 <h3>Let's set up a {{user_habit_name}} accountability partner,  {{user_name}}!</h3>
 <div>
+    {%if not messages_db%}
     <form action='/messages/{{user_habit_id}}', method='POST'>
     <p>
        Enter partner's email address <input type="text" name="email">
     </p>
     <p>
-       Send your partner a message <input type='text' name="messages">
+       Send your new partner a message <input type='text' name="messages">
     </p>
     <p>
         <input type = "submit">
     </p>
     </form>
+    {% elif }
+    <p>{{reciever_name}}'s progress so far {{partner_progress}}</p>
+    <p>Send {{receiver_name}} a message <input type='text' name="messages"> </p>
+    <p>
+        <input type = "submit">
+    </p>
+    {%endif%}
 </div>
 <div>
     Click here to see old messages
