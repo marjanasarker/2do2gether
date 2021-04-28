@@ -210,34 +210,47 @@ def logout():
 
     return redirect('/')
 
-@app.route('/messages/<user_habit_id>')
-def display_accountability_page(user_habit_id):
-    """Rendering an accountability partner setup and messages page"""
+# @app.route('/messages/<user_habit_id>')
+# def display_accountability_page(user_habit_id):
+#     """Rendering an accountability partner setup and messages page"""
 
-    user_name = crud.get_user_by_id(session['user_id'])
-    user_habit_id = user_habit_id
-    user_habit_name = crud.get_user_habit_name(user_habit_id)
-   
-   
-    return render_template("messages.html", user_name=user_name, user_habit_name=user_habit_name)
-
-#@app.route('/messages/<user_habit_id>', methods=['POST'])
-#def partner_set_up(user_habit_id):
-#  """Setting up accountability partners and sending messages"""
-#     
-#     email = request.form.get('email')
-#     messages = request.form.get('messages')
-#
-#     date_of = date.today()  
-#     user_habit_id = user_habit_id
-#     messages_db = crud.get_messages_user_habit(user_habit_id)
-#     sender_id = session['user_id']
 #     user_name = crud.get_user_by_id(session['user_id'])
+#     user_habit_id = user_habit_id
+#     user_habit_name = crud.get_user_habit_name(user_habit_id)
 #     receiver_id = crud.get_user_by_email(email).user_id
 #     receiver_name = crud.get_user_by_email(email).fname
-#       
+#     messages_db = crud.get_messages_user_habit(user_habit_id)
+#     partner_sum_logins = crud.get_user_habit_progress_sum(user_habit_id)
+   
+#     return render_template("messages.html", user_name=user_name, user_habit_name=user_habit_name, receiver_name=receiver_name, messages_db=messages_db)
+
+# @app.route('/messages/<user_habit_id>', methods=['POST'])
+# def partner_set_up(user_habit_id):
+#     """Setting up accountability partners and sending messages"""
+    
+    
+#     messages = request.form.get('messages')
+#     message_date = date.today()  
+#     user_habit_id = user_habit_id
+     
+#     sender_id = session['user_id']
+    
+#     messages_db = crud.get_messages_user_habit(user_habit_id)
+#     receiver_id = 
+    
+
 #     if not messages_db:
-#  
+#         email = request.form.get('email')
+#         receiver_id = crud.get_user_by_email(email).user_id
+#         messages_start = crud.create_messages(user_habit_id, sender_id, receiver_id, message_date, messages)
+#     else:
+#         more_messages = crud.create_messages(user_habit_id, sender_id, receiver_id, message_date, messages)   
+
+      
+    
+
+ 
+ 
 
 
 # @app.route('/display-chart')
