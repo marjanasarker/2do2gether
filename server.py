@@ -1,4 +1,4 @@
-from flask import Flask, request, flash, session, redirect, render_template
+from flask import Flask, request, flash, session, redirect, render_template, jsonify
 from model import connect_to_db
 from datetime import datetime, date, timedelta 
 import crud
@@ -224,16 +224,78 @@ def display_accountability_page(user_habit_id):
 #@app.route('/messages/<user_habit_id>', methods=['POST'])
 #def partner_set_up(user_habit_id):
 #  """Setting up accountability partners and sending messages"""
+#     
 #     email = request.form.get('email')
 #     messages = request.form.get('messages')
 #
+#     date_of = date.today()  
 #     user_habit_id = user_habit_id
+#     messages_db = crud.get_messages_user_habit(user_habit_id)
 #     sender_id = session['user_id']
 #     user_name = crud.get_user_by_id(session['user_id'])
 #     receiver_id = crud.get_user_by_email(email).user_id
+#     receiver_name = crud.get_user_by_email(email).fname
 #       
-#     
+#     if not messages_db:
+#  
 
+
+# @app.route('/display-chart')
+# def view_chart():
+
+#     return render_template("chart.html")        
+
+# @app.route('/melon-times.json')
+# def melon_times_data():
+#     """Return time series data of Melon Sales."""
+
+#     data_dict = {
+#         "labels": ["January", "February", "March", "April", "May", "June", "July"],
+#         "datasets": [
+#             {
+#                 "label": "Watermelon",
+#                 "fill": True,
+#                 "lineTension": 0.5,
+#                 "backgroundColor": "rgba(220,220,220,0.2)",
+#                 "borderColor": "rgba(220,220,220,1)",
+#                 "borderCapStyle": 'butt',
+#                 "borderDash": [],
+#                 "borderDashOffset": 0.0,
+#                 "borderJoinStyle": 'miter',
+#                 "pointBorderColor": "rgba(220,220,220,1)",
+#                 "pointBackgroundColor": "#fff",
+#                 "pointBorderWidth": 1,
+#                 "pointHoverRadius": 5,
+#                 "pointHoverBackgroundColor": "#fff",
+#                 "pointHoverBorderColor": "rgba(220,220,220,1)",
+#                 "pointHoverBorderWidth": 2,
+#                 "pointRadius": 3,
+#                 "pointHitRadius": 10,
+#                 "data": [65, 59, 80, 81, 56, 55, 40],
+#                 "spanGaps": False},
+#             {
+#                 "label": "Cantaloupe",
+#                 "fill": True,
+#                 "lineTension": 0.5,
+#                 "backgroundColor": "rgba(151,187,205,0.2)",
+#                 "borderColor": "rgba(151,187,205,1)",
+#                 "borderCapStyle": 'butt',
+#                 "borderDash": [],
+#                 "borderDashOffset": 0.0,
+#                 "borderJoinStyle": 'miter',
+#                 "pointBorderColor": "rgba(151,187,205,1)",
+#                 "pointBackgroundColor": "#fff",
+#                 "pointBorderWidth": 1,
+#                 "pointHoverRadius": 5,
+#                 "pointHoverBackgroundColor": "#fff",
+#                 "pointHoverBorderColor": "rgba(151,187,205,1)",
+#                 "pointHoverBorderWidth": 2,
+#                 "pointHitRadius": 10,
+#                 "data": [28, 48, 40, 19, 86, 27, 90],
+#                 "spanGaps": False}
+#         ]
+#     }
+#     return jsonify(data_dict)
 
 if __name__ == '__main__':
     connect_to_db(app)
