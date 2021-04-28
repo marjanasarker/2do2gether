@@ -87,13 +87,13 @@ def get_habit_id(habit_name):
     user_habit = Habit.query.filter(Habit.name == habit_name).first()
     return user_habit.habit_id
 
-def get_user_name_habit(habit_name):
+def get_user_name_same_habit(habit_name):
     """Returns list of user full name with same habits"""
 
     same_habit_user = User_habit.query.filter_by(name=habit_name).all()
     same_habit_users_id = []
     
-    same_habit_users_name = []
+    same_habit_users_name_email = []
     for users in same_habit_user:
         same_habit_users_id.append(users.user_id)
     
@@ -105,7 +105,16 @@ def get_user_name_habit(habit_name):
         name = fname+' '+lname
         same_habit_users_name.append(name)
     return(same_habit_users_name)
-    
+
+def get_user_habit_id_habitname_userid(habit_name, user_id):
+    """Returns user_habit_id with habit_name and user_id"""
+
+    same_habit_user = User_habit.query.filter_by(name=habit_name).all()
+    for user in same_habit_user:
+        if user_id == user_id:
+            return user.user_habit_id
+
+
 def get_habits_by_user(user_id):
     """Return habits by user"""
 
@@ -190,16 +199,15 @@ def get_user_habit_name(user_habit_id):
 def get_messages_user_habit(user_habit_id):
     """Return messages by user_habit_id"""
 
-    return Messages.query.filter_by(user_habit_id=user_habit_id).all()
-    #return message_details
-    #date_message=[]
-    #
-    # for user in message_details:
-    #     date = message_details.message_date.strftime('%Y-%m-%d')
-    #     message = message_details.message
-    #     date_and_message = (date, message)
-    #     date_message.append(date_and_message)
-    # return date_message  
+    message_details= Messages.query.filter_by(user_habit_id=user_habit_id).all()
+    date_message=[]
+    
+    for user in message_details:
+        date = user.message_date.strftime('%Y-%m-%d')
+        message = user.message
+        date_and_message = (date, message)
+        date_message.append(date_and_message)
+    return date_message  
 
 
 if __name__ == '__main__':
