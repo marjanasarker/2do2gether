@@ -114,6 +114,11 @@ def get_user_habit_id_habitname_userid(habit_name, user_id):
         if user_id == user_id:
             return user.user_habit_id
 
+def get_receiver_id(user_habit_id):
+    """Return receiver id using user_habit_id from the messages table"""
+
+    one_message = Messages.query.filter_by(user_habit_id=user_habit_id).first()
+    return one_message.receiver_id
 
 def get_habits_by_user(user_id):
     """Return habits by user"""
