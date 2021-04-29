@@ -3,10 +3,15 @@
 
 
 {% block body %}
-<h3>Let's set up a {{user_habit_name}} accountability partner,  {{user_name}}!</h3>
+
 <div>
+    
+    
+    
     {%if not messages_db%}
     <form action='/messages/{{user_habit_id}}', method='POST'>
+    <h3>Let's set up a {{user_habit_name}} accountability partner,  {{user_name}}!</h3>
+    
     <p>
        Enter partner's email address <input type="text" name="email">
     </p>
@@ -17,17 +22,27 @@
         <input type = "submit">
     </p>
     </form>
-    {% elif }
-    <p>{{reciever_name}}'s progress so far {{partner_progress}}</p>
-    <p>Send {{receiver_name}} a message <input type='text' name="messages"> </p>
+    {% else %}
+    <form action='/messages/{{user_habit_id}}', method='POST'>
+    <h3>Let's check how {{sender_name}} is faring with their {{user_habit_name}}</h3>
+    <p>{{sender_name}}'s progress so far is at  {{partner_progress}}%</p>
+    <p>Send {{sender_name}} a message <input type='text' name="messages"> </p>
     <p>
         <input type = "submit">
     </p>
+    
+    </form>
+    <div>
+    
+        Click below to see previous messages
+        <p><button type="button">Message thread</button></p>
+        <p>{{user_name}} {{check_messages}}</p>
+    
+    </div>
     {%endif%}
+    
 </div>
-<div>
-    Click here to see old messages
-</div>
+
 <p>
     <a href='/habit_display'>Back to your dashboard</a>
 </p>
