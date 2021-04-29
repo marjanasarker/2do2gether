@@ -8,7 +8,13 @@
 
 
 {%for habit in user_habits%}
-<li>{{ habit.name.upper() }} <a href='/habit_log_display/{{habit.user_habit_id}}'>Log</a>, <a href='/habit_progress/{{habit.user_habit_id}}'>Track Progress</a>, <a href='/messages/{{habit.user_habit_id}}'>Accountability</a> </li>
+<ul>
+<li>{{ habit.name.upper() }} 
+    <a href='/habit_log_display/{{habit.user_habit_id}}'><button type="button">Log</button></a> 
+    <a href='/habit_progress/{{habit.user_habit_id}}'><button type="button">Track Progress</button></a> 
+    <a href='/messages/{{habit.user_habit_id}}'><button type="button">Accountability</button></a> 
+</li>
+</ul>
 {% endfor %}
 
 <p>
