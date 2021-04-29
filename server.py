@@ -142,13 +142,15 @@ def display_habit_log(user_habit_id):
     goal = crud.get_user_habit_goal(user_habit_id)
 
     date_of = date.today()
+    date_logs = crud.get_user_habit_log_dates(user_habit_id)
+    last_login = date_logs[-1]
     
     if sum_logins:
         progress = float(sum_logins/goal)*100
     else:
         progress = 0
 
-    return render_template("habit_log_display.html", user_habit_name=user_habit_name, user_habit_id=user_habit_id, progress=progress, date_of=date_of)
+    return render_template("habit_log_display.html", user_habit_name=user_habit_name, user_habit_id=user_habit_id, progress=progress, date_of=date_of, last_login=last_login)
 
 @app.route('/habit_log_display/<user_habit_id>', methods=['POST'])
 def display_track_habit_log(user_habit_id):
@@ -163,6 +165,7 @@ def display_track_habit_log(user_habit_id):
     date_of = date.today()
     time_added = timedelta(days=7)
     date_logs = crud.get_user_habit_log_dates(user_habit_id)
+    last_login = date_logs[-1]
     
     
     if str(date_of) not in date_logs:
@@ -189,7 +192,7 @@ def user_habit_progress(user_habit_id):
     goal = crud.get_user_habit_goal(user_habit_id)
     date_of = date.today()
 
-    end_date = crud.get_user_habit_end_date(user_habit_id).date()
+    end_date = crud.get_user_habit_end_date(user_habit_id)
     days_left = (end_date-date_of).days
     
     journal_entries = crud.get_journal_entries_by_user_habit(user_habit_id)
@@ -230,7 +233,11 @@ def display_accountability_page(user_habit_id):
         print(accountability_habit_id)
         check_messages_sender = crud.get_messages_user_habit(accountability_habit_id)
         check_messages_receiver = crud.get_messages_user_habit(user_habit_id)
-
+        date_of = date.today()
+        date_logs = crud.get_user_habit_log_dates(accountability_habit_id)
+        last_login = date_logs[-1]
+        end_date = crud.get_user_habit_end_date(accountability_habit_id)
+        days_left = (end_date-date_of).days
         partner_sum_logins = crud.get_user_habit_progress_sum(accountability_habit_id)
         partner_goal = crud.get_user_habit_goal(accountability_habit_id)
         
@@ -238,7 +245,7 @@ def display_accountability_page(user_habit_id):
             partner_progress = float(partner_sum_logins/partner_goal)*100
         else:
             partner_progress = 0
-        return render_template("messages.html", user_habit_id=user_habit_id,user_name=user_name, user_habit_name=user_habit_name, sender_name=sender_name, messages_db=messages_db,partner_progress=partner_progress, check_messages_receiver=check_messages_receiver, check_messages_sender=check_messages_sender)
+        return render_template("messages.html", user_habit_id=user_habit_id,user_name=user_name, user_habit_name=user_habit_name, sender_name=sender_name, messages_db=messages_db,partner_progress=partner_progress, check_messages_receiver=check_messages_receiver, check_messages_sender=check_messages_sender, days_left=days_left, last_login=last_login)
 
     else:
         return render_template("messages.html", user_habit_id=user_habit_id, user_name=user_name,user_habit_name=user_habit_name, messages_db=messages_db)
