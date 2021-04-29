@@ -210,105 +210,70 @@ def logout():
 
     return redirect('/')
 
-# @app.route('/messages/<user_habit_id>')
-# def display_accountability_page(user_habit_id):
-#     """Rendering an accountability partner setup and messages page"""
+@app.route('/messages/<user_habit_id>')
+def display_accountability_page(user_habit_id):
+    """Rendering an accountability partner setup and messages page"""
 
-#     user_name = crud.get_user_by_id(session['user_id'])
-#     user_habit_id = user_habit_id
-#     user_habit_name = crud.get_user_habit_name(user_habit_id)
-#     receiver_id = crud.get_user_by_email(email).user_id
-#     receiver_name = crud.get_user_by_email(email).fname
-#     messages_db = crud.get_messages_user_habit(user_habit_id)
-#     partner_sum_logins = crud.get_user_habit_progress_sum(user_habit_id)
-   
-#     return render_template("messages.html", user_name=user_name, user_habit_name=user_habit_name, receiver_name=receiver_name, messages_db=messages_db)
+    user_name = crud.get_user_by_id(session['user_id'])
+    user_habit_id = user_habit_id
+    user_habit_name = crud.get_user_habit_name(user_habit_id)
+    print(user_habit_name)
 
-# @app.route('/messages/<user_habit_id>', methods=['POST'])
-# def partner_set_up(user_habit_id):
-#     """Setting up accountability partners and sending messages"""
+    messages_db = crud.get_messages_user_habit(user_habit_id)
+    check_messages = crud.get_messages_user_habit(user_habit_id)
+
+    if messages_db:
+        sender_id = crud.get_sender_id(user_habit_id)
+        
+        sender_name = crud.get_user_by_id(sender_id)
+        accountability_habit_id = crud.get_user_habit_id_habitname_userid(user_habit_name, sender_id)
+        print(accountability_habit_id)
+        partner_sum_logins = crud.get_user_habit_progress_sum(accountability_habit_id)
+        partner_goal = crud.get_user_habit_goal(accountability_habit_id)
+        
+        if partner_sum_logins:
+            partner_progress = float(partner_sum_logins/partner_goal)*100
+        else:
+            partner_progress = 0
+        return render_template("messages.html", user_habit_id=user_habit_id,user_name=user_name, user_habit_name=user_habit_name, sender_name=sender_name, messages_db=messages_db,partner_progress=partner_progress, check_messages=check_messages)
+
+    else:
+        return render_template("messages.html", user_habit_id=user_habit_id, user_name=user_name,user_habit_name=user_habit_name, messages_db=messages_db)
+
+    
+@app.route('/messages/<user_habit_id>', methods=['POST'])
+def partner_set_up(user_habit_id):
+    """Setting up accountability partners and sending messages"""
     
     
-#     messages = request.form.get('messages')
-#     message_date = date.today()  
-#     user_habit_id = user_habit_id
+    messages = request.form.get('messages')
+    message_date = date.today()  
+    user_habit_id = user_habit_id
      
-#     sender_id = session['user_id']
+    receiver_id = session['user_id']
     
-#     messages_db = crud.get_messages_user_habit(user_habit_id)
-#     receiver_id = 
+    messages_db = crud.get_messages_user_habit(user_habit_id)
     
-
-#     if not messages_db:
-#         email = request.form.get('email')
-#         receiver_id = crud.get_user_by_email(email).user_id
-#         messages_start = crud.create_messages(user_habit_id, sender_id, receiver_id, message_date, messages)
-#     else:
-#         more_messages = crud.create_messages(user_habit_id, sender_id, receiver_id, message_date, messages)   
-
       
+    if not messages_db:
+        email = request.form.get('email')
+        sender_id = crud.get_user_by_email(email).user_id
+        print(sender_id)
+        messages_start = crud.create_messages(user_habit_id, sender_id, receiver_id, message_date, messages)
+        flash("New partner has been sent your message")
+    else:
+        sender_id = crud.get_sender_id(user_habit_id)
+        sender_name = crud.get_user_by_id(sender_id)
+        more_messages = crud.create_messages(user_habit_id, sender_id, receiver_id, message_date, messages)   
+        flash("Your partner received your message")
+
+    return display_accountability_page(user_habit_id)
     
 
  
  
 
 
-# @app.route('/display-chart')
-# def view_chart():
-
-#     return render_template("chart.html")        
-
-# @app.route('/melon-times.json')
-# def melon_times_data():
-#     """Return time series data of Melon Sales."""
-
-#     data_dict = {
-#         "labels": ["January", "February", "March", "April", "May", "June", "July"],
-#         "datasets": [
-#             {
-#                 "label": "Watermelon",
-#                 "fill": True,
-#                 "lineTension": 0.5,
-#                 "backgroundColor": "rgba(220,220,220,0.2)",
-#                 "borderColor": "rgba(220,220,220,1)",
-#                 "borderCapStyle": 'butt',
-#                 "borderDash": [],
-#                 "borderDashOffset": 0.0,
-#                 "borderJoinStyle": 'miter',
-#                 "pointBorderColor": "rgba(220,220,220,1)",
-#                 "pointBackgroundColor": "#fff",
-#                 "pointBorderWidth": 1,
-#                 "pointHoverRadius": 5,
-#                 "pointHoverBackgroundColor": "#fff",
-#                 "pointHoverBorderColor": "rgba(220,220,220,1)",
-#                 "pointHoverBorderWidth": 2,
-#                 "pointRadius": 3,
-#                 "pointHitRadius": 10,
-#                 "data": [65, 59, 80, 81, 56, 55, 40],
-#                 "spanGaps": False},
-#             {
-#                 "label": "Cantaloupe",
-#                 "fill": True,
-#                 "lineTension": 0.5,
-#                 "backgroundColor": "rgba(151,187,205,0.2)",
-#                 "borderColor": "rgba(151,187,205,1)",
-#                 "borderCapStyle": 'butt',
-#                 "borderDash": [],
-#                 "borderDashOffset": 0.0,
-#                 "borderJoinStyle": 'miter',
-#                 "pointBorderColor": "rgba(151,187,205,1)",
-#                 "pointBackgroundColor": "#fff",
-#                 "pointBorderWidth": 1,
-#                 "pointHoverRadius": 5,
-#                 "pointHoverBackgroundColor": "#fff",
-#                 "pointHoverBorderColor": "rgba(151,187,205,1)",
-#                 "pointHoverBorderWidth": 2,
-#                 "pointHitRadius": 10,
-#                 "data": [28, 48, 40, 19, 86, 27, 90],
-#                 "spanGaps": False}
-#         ]
-#     }
-#     return jsonify(data_dict)
 
 if __name__ == '__main__':
     connect_to_db(app)
