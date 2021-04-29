@@ -3,7 +3,7 @@
 
 
 {% block body %}
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <div>
     
     
@@ -35,14 +35,49 @@
     <div>
     
         Click below to see previous messages
-        <p><button type="button">Message thread</button></p>
-        <p>{{user_name}} {{check_messages}}</p>
+        <p><button id=1 type="button">Messages you sent</button></p>
+        <p>
+            <ul id="list1">
+            {% for record in check_messages_receiver %}
+            <li>On {{record[0]}}, you messaged: {{record[1]}}</li>
+            
+            {% endfor %}
+            </ul>
+        </p>
+        <p><button id="2" type="button">Messages from {{sender_name}}</button></p>
+        <p>
+            <ul id="list2">
+            {% for record in check_messages_sender %}
+            <li>On {{record[0]}}, {{record[2]}} messaged: {{record[1]}}</li>
+            
+            {% endfor %}
+            </ul>
+        </p>
+
+        
     
     </div>
     {%endif%}
     
 </div>
+<script>
+    $(document).ready(function () {
+     $('#list2').hide();
+     $('#list1').hide();
+     //toggle button text
+     //$('button').click(function () {
+         //$('span', this).toggle();
+     //});
+     //toggle list
+     $('#1').click(function () {
+         $('#list1').toggle();
+     });
+     $('#2').click(function () {
+         $('#list2').toggle();
+     });
+ });
 
+</script>
 <p>
     <a href='/habit_display'>Back to your dashboard</a>
 </p>
