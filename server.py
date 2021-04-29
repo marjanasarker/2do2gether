@@ -218,16 +218,19 @@ def display_accountability_page(user_habit_id):
     user_habit_id = user_habit_id
     user_habit_name = crud.get_user_habit_name(user_habit_id)
     print(user_habit_name)
+    receiver_id = session['user_id']
 
     messages_db = crud.get_messages_user_habit(user_habit_id)
-    check_messages = crud.get_messages_user_habit(user_habit_id)
-
+    
     if messages_db:
         sender_id = crud.get_sender_id(user_habit_id)
         
         sender_name = crud.get_user_by_id(sender_id)
         accountability_habit_id = crud.get_user_habit_id_habitname_userid(user_habit_name, sender_id)
         print(accountability_habit_id)
+        check_messages_sender = crud.get_messages_user_habit(accountability_habit_id)
+        check_messages_receiver = crud.get_messages_user_habit(user_habit_id)
+
         partner_sum_logins = crud.get_user_habit_progress_sum(accountability_habit_id)
         partner_goal = crud.get_user_habit_goal(accountability_habit_id)
         
@@ -235,7 +238,7 @@ def display_accountability_page(user_habit_id):
             partner_progress = float(partner_sum_logins/partner_goal)*100
         else:
             partner_progress = 0
-        return render_template("messages.html", user_habit_id=user_habit_id,user_name=user_name, user_habit_name=user_habit_name, sender_name=sender_name, messages_db=messages_db,partner_progress=partner_progress, check_messages=check_messages)
+        return render_template("messages.html", user_habit_id=user_habit_id,user_name=user_name, user_habit_name=user_habit_name, sender_name=sender_name, messages_db=messages_db,partner_progress=partner_progress, check_messages_receiver=check_messages_receiver, check_messages_sender=check_messages_sender)
 
     else:
         return render_template("messages.html", user_habit_id=user_habit_id, user_name=user_name,user_habit_name=user_habit_name, messages_db=messages_db)
