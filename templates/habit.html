@@ -25,29 +25,27 @@
           Goal <input type='number' id='habit-goal'name='goal'>
         </p>
          <p>
-           Start date:<input type="date" name="start_date">
+           Start date:<input type="date" id="start_date" name='start_date'>
          </p>
-         <p>
-          End date:<input type="date" name="end_date">
-        </p>
+         
          <p>
            <input type="submit" value="Submit">
          </p> 
          
         </form>
-<script
-        src="https://code.jquery.com/jquery-3.6.0.js"
-        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-        crossorigin="anonymous">
-</script>
-<script>
-  "use strict";
-  $('#habit-goal').on('click', () =>{
-    alert('A range');
-  });
-</script>  
+
+
 <p>{{num_habits}} habits created</p>
 <a href='/habit_display'>Back to your dashboard</a>   
-  
+<script>
+  "use strict";
+  $("#habit-goal").on('click', ()=>{
+    if ($('#type_goal').val()== "hours")
+    alert('Select between 10 - 1800 hours')
+    if ($('#type_goal').val() =="days")
+    alert('Select between 10 - 30 days')
+
+  })
+</script>
 
 {% endblock %}
