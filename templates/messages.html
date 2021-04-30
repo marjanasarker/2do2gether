@@ -22,6 +22,22 @@
         <input type = "submit">
     </p>
     </form>
+    
+    {% if other_users and other_users|length > 1 %}
+    Others practicing {{user_habit_name}} like you
+    
+    
+    <ul>
+        {% for user in other_users %}
+        {% if user[0] != user_name %}
+        <li>{{user[0]}}'s email address: {{user[1]}}</li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    
+    {% else %}
+    We will alert you when someone picks this habit, for now you can partner with someone who has a different habit.
+    {% endif %}
     {% else %}
     <form action='/messages/{{user_habit_id}}', method='POST'>
     <h3>Let's check how {{sender_name}} is faring with their {{user_habit_name}}</h3>
@@ -79,7 +95,7 @@
  });
 
 </script>
-<p>
+<div>
     <a href='/habit_display'>Back to your dashboard</a>
-</p>
+</div>
 {% endblock %}
