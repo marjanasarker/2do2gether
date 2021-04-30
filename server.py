@@ -94,9 +94,11 @@ def create_new_habit():
     goal = request.form.get('goal')
     habit_name = request.form.get('habit_name').lower()
     type_goal = request.form.get('type_goal')
-    
     start_date = request.form.get('start_date')
-    end_date = request.form.get('end_date')
+    
+    current_start_date = datetime.strptime(start_date, "%Y-%m-%d")
+    after_date = current_start_date + timedelta(days=30)
+    end_date = after_date.strftime('%Y-%m-%d')
 
     num_habits=crud.get_number_of_habits(session['user_id'])
     user_habits = crud.get_habits_by_user(session['user_id'])
@@ -109,7 +111,6 @@ def create_new_habit():
     
     if num_habits<3:
         new_habit = crud.create_user_habit(session['user_id'],habit_id,goal,habit_name,type_goal,start_date,end_date)
-    
     else:
         flash('Reached limit for number of habits')
         return redirect('/habit_display')
@@ -143,29 +144,30 @@ def display_habit_log(user_habit_id):
 
     date_of = date.today()
     date_logs = crud.get_user_habit_log_dates(user_habit_id)
-    last_login = date_logs[-1]
+    
     
     if sum_logins:
         progress = float(sum_logins/goal)*100
     else:
         progress = 0
+    
+    
 
-    return render_template("habit_log_display.html", user_habit_name=user_habit_name, user_habit_id=user_habit_id, progress=progress, date_of=date_of, last_login=last_login)
+    return render_template("habit_log_display.html", user_habit_name=user_habit_name, user_habit_id=user_habit_id, date_logs=date_logs, progress=progress, date_of=date_of)
 
 @app.route('/habit_log_display/<user_habit_id>', methods=['POST'])
 def display_track_habit_log(user_habit_id):
     """Function to create new habit_log for user's habit"""
     
     user_habit_id = user_habit_id
-    print(user_habit_id)
-    #user_habit_name = crud.get_user_habit_name(user_habit_id)
+    
     log_in_time = request.form.get('log_in_time')
     journal_entry=request.form.get('journal_entry')
 
     date_of = date.today()
     time_added = timedelta(days=7)
     date_logs = crud.get_user_habit_log_dates(user_habit_id)
-    last_login = date_logs[-1]
+    
     
     
     if str(date_of) not in date_logs:
@@ -176,8 +178,6 @@ def display_track_habit_log(user_habit_id):
         flash('Log not recorded')
         flash('Log for this habit already created for today')
         return display_habit_log(user_habit_id)
-
-    
     
     return redirect('/habit_display')
 
@@ -220,17 +220,14 @@ def display_accountability_page(user_habit_id):
     user_name = crud.get_user_by_id(session['user_id'])
     user_habit_id = user_habit_id
     user_habit_name = crud.get_user_habit_name(user_habit_id)
-    print(user_habit_name)
     receiver_id = session['user_id']
-
     messages_db = crud.get_messages_user_habit(user_habit_id)
+    other_users = crud.get_user_name_same_habit(user_habit_name)
     
     if messages_db:
         sender_id = crud.get_sender_id(user_habit_id)
-        
         sender_name = crud.get_user_by_id(sender_id)
         accountability_habit_id = crud.get_user_habit_id_habitname_userid(user_habit_name, sender_id)
-        print(accountability_habit_id)
         check_messages_sender = crud.get_messages_user_habit(accountability_habit_id)
         check_messages_receiver = crud.get_messages_user_habit(user_habit_id)
         date_of = date.today()
@@ -238,6 +235,7 @@ def display_accountability_page(user_habit_id):
         last_login = date_logs[-1]
         end_date = crud.get_user_habit_end_date(accountability_habit_id)
         days_left = (end_date-date_of).days
+        
         partner_sum_logins = crud.get_user_habit_progress_sum(accountability_habit_id)
         partner_goal = crud.get_user_habit_goal(accountability_habit_id)
         
@@ -248,7 +246,7 @@ def display_accountability_page(user_habit_id):
         return render_template("messages.html", user_habit_id=user_habit_id,user_name=user_name, user_habit_name=user_habit_name, sender_name=sender_name, messages_db=messages_db,partner_progress=partner_progress, check_messages_receiver=check_messages_receiver, check_messages_sender=check_messages_sender, days_left=days_left, last_login=last_login)
 
     else:
-        return render_template("messages.html", user_habit_id=user_habit_id, user_name=user_name,user_habit_name=user_habit_name, messages_db=messages_db)
+        return render_template("messages.html", user_habit_id=user_habit_id, user_name=user_name,user_habit_name=user_habit_name, messages_db=messages_db, other_users=other_users)
 
     
 @app.route('/messages/<user_habit_id>', methods=['POST'])
