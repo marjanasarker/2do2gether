@@ -34,8 +34,8 @@ habit_log_2=Habit_log(user_habit_id=2,journal_id=2,date_of='04-13-2021',log_in_t
 habit_log_3=Habit_log(user_habit_id=3,journal_id=3,date_of='04-13-2021',log_in_time=1)
 habit_log_4=Habit_log(user_habit_id=4,journal_id=4,date_of='04-13-2021',log_in_time=0.5)
 
-messages_1=Messages(user_habit_id=1, sender_id=2, receiver_id=1, message_date='04-13-2021', message='Fantastic job finishing the task at hand today')
-messages_2=Messages(user_habit_id=3, sender_id=1, receiver_id=2, message_date='04-13-2021', message='Just 20 mins of yoga will make a huge difference, you still have time')
+#messages_1=Messages(user_habit_id=1, sender_id=2, receiver_id=1, message_date='04-13-2021', message='Fantastic job finishing the task at hand today')
+#messages_2=Messages(user_habit_id=3, sender_id=1, receiver_id=2, message_date='04-13-2021', message='Just 20 mins of yoga will make a huge difference, you still have time')
 
 
 
@@ -44,5 +44,5 @@ db.session.add_all([habit_1,habit_2,habit_3,habit_4])
 db.session.add_all([journal_1,journal_2,journal_3,journal_4])
 db.session.add_all([user_habit_1,user_habit_2,user_habit_3,user_habit_4])
 db.session.add_all([habit_log_1,habit_log_2,habit_log_3,habit_log_4])
-db.session.add_all([messages_1,messages_2])
+#db.session.add_all([messages_1,messages_2])
 db.session.commit()
