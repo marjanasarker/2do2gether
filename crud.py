@@ -81,6 +81,11 @@ def get_habits():
     habits_in_list = [habit for (habit,) in habits_in_db]
     return habits_in_list
 
+def get_type_goal(user_habit_id):
+
+    user_habit_details = User_habit.query.filter_by(user_habit_id=user_habit_id).first()
+    return user_habit_details.type_of_execution
+
 def get_habit_id(habit_name):
     """Returns habit id by taking habit_name as argument"""
 
@@ -101,24 +106,26 @@ def get_user_name_same_habit(habit_name):
         user_details = User.query.filter_by(user_id=user).one()
         
         fname=user_details.fname
-        lname=user_details.lname
-        name = fname+' '+lname
-        same_habit_users_name.append(name)
-    return(same_habit_users_name)
+        email = user_details.email
+        name_email = (fname, email)
+        same_habit_users_name_email.append(name_email)
+    return(same_habit_users_name_email)
 
 def get_user_habit_id_habitname_userid(habit_name, user_id):
     """Returns user_habit_id with habit_name and user_id"""
 
     same_habit_user = User_habit.query.filter_by(name=habit_name).all()
+    
     for user in same_habit_user:
-        if user_id == user_id:
-            return user.user_habit_id
+        if user.user_id == user_id:
+            return user.user_habit_id 
 
-def get_receiver_id(user_habit_id):
+         
+def get_sender_id(user_habit_id):
     """Return receiver id using user_habit_id from the messages table"""
 
     one_message = Messages.query.filter_by(user_habit_id=user_habit_id).first()
-    return one_message.receiver_id
+    return one_message.sender_id
 
 def get_habits_by_user(user_id):
     """Return habits by user"""
@@ -141,14 +148,6 @@ def get_user_habit_log(user_habit_id):
 
     return Habit_log.query.filter(Habit_log.user_habit_id == user_habit_id).all()
 
-# def get_user_habit_log_dates(user_habit_id):
-
-#     habit_log = get_user_habit_log(user_habit_id)
-#     log_dates=[]
-#     for logs in habit_log:
-#         date = logs.date_of
-#         log_dates.append(date)
-#     return log_dates
 def get_user_journal_entries(journal_id):
     """Return journal entries using journal id"""
 
@@ -183,7 +182,6 @@ def get_user_habit_goal(user_habit_id):
 
     habit_details= User_habit.query.filter(User_habit.user_habit_id==user_habit_id).one()
     habit_goal = habit_details.goal
-    #habit_goal = habit_details.query.filter(User_habit.goal).all()
     return habit_goal
 
 def get_user_habit_end_date(user_habit_id):
@@ -210,10 +208,40 @@ def get_messages_user_habit(user_habit_id):
     for user in message_details:
         date = user.message_date.strftime('%Y-%m-%d')
         message = user.message
-        date_and_message = (date, message)
+        receiver_name = get_user_by_id(user.receiver_id)
+        date_and_message = (date, message, receiver_name)
         date_message.append(date_and_message)
     return date_message  
 
+def add_accountability_partner_id(user_habit_id, accountability_partner_id):
+    """Upadates user_habit_id with accountability_partner_id once partner selected for habit"""
+
+    user_habits = User_habit.query.filter_by(user_habit_id=user_habit_id).first()
+    user_habits.accountability_partner_id = accountability_partner_id
+
+
+def get_user_habit_ids_habit_name(user_habit_name):
+    """Storing the user_habit_ids for a particular habit in a list"""
+
+    user_habit_ids = User_habit.query.filter_by(name=user_habit_name).all()
+    user_habit_id = []
+    for user in user_habit_ids:
+        user_habit_id.append(user.user_habit_id)
+        
+    return user_habit_id
+
+def check_if_selected_accountability_partner(user_habit_name, user_id):
+    """Return the user id that chose a person as their accountability partner"""
+    check_users = get_user_habit_ids_habit_name(user_habit_name)
+    
+    for user_habit_id in check_users:
+        habit_details = User_habit.query.filter_by(user_habit_id=user_habit_id).first()
+        if habit_details.accountability_partner_id==user_id:
+
+            return habit_details.user_id
+
+  
+        
 
 if __name__ == '__main__':
     from server import app

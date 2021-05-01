@@ -8,7 +8,7 @@
     
     
     
-    {%if not messages_db%}
+    {%if not set_as_partner_id%}
     <form action='/messages/{{user_habit_id}}', method='POST'>
     <h3>Let's set up a {{user_habit_name}} accountability partner,  {{user_name}}!</h3>
     
@@ -36,7 +36,7 @@
     </ul>
     
     {% else %}
-    We will alert you when someone picks this habit, for now you can partner with someone who has a different habit.
+    We will alert you when someone picks this habit.
     {% endif %}
     {% else %}
     <form action='/messages/{{user_habit_id}}', method='POST'>
@@ -55,7 +55,8 @@
     </form>
     <div>
     
-        Click below to see previous messages
+        Click below to see messages
+        {% if check_messages_receiver %}
         <p><button id=1 type="button">Messages you sent</button></p>
         <p>
             <ul id="list1">
@@ -65,6 +66,8 @@
             {% endfor %}
             </ul>
         </p>
+        {%endif%}
+        {% if check_messages_sender %}
         <p><button id="2" type="button">Messages from {{sender_name}}</button></p>
         <p>
             <ul id="list2">
@@ -74,6 +77,7 @@
             {% endfor %}
             </ul>
         </p>
+        {% endif %}
 
         
     

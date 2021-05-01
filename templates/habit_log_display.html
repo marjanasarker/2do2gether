@@ -8,10 +8,18 @@
 <p>
     Date of activity: {{date_of}}
 </p>
+{% if type_of_execution=="hours"%}
 <form action='/habit_log_display/{{user_habit_id}}', method='POST'>
-    <p>
-        Login_time <input type='text' name="log_in_time">
-    </p>
+    
+    
+        
+        <p>Login_time <input type='text' name="log_in_time"></p>
+        <select name="type_goal" id="type_goal">
+            <option value="hours">Hours</option>
+            <option value="minutes">Minutes</option></select>
+        
+        
+    
     
     <p>
         Journal entry <input type='text' name="journal_entry">
@@ -22,6 +30,18 @@
     
 
 </form>
+
+{%else%}
+<form action='/habit_log_display/{{user_habit_id}}', method='POST'>
+        <p>Login_time <input type='text' name="log_in_time"></p>
+        <p>
+            Journal entry <input type='text' name="journal_entry">
+        </p>
+        <p>
+        <input type = "submit">
+        </p>
+    </form>
+{%endif%}
 {% if date_logs %}
 <p>Your last log for this habit was on: {{date_logs[-1]}}</p>
 {% else %}

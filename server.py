@@ -78,7 +78,6 @@ def show_habit():
     
     num_habits=crud.get_number_of_habits(session['user_id'])
     
-    
     if num_habits:
         num_habits=num_habits
     else:
@@ -138,7 +137,8 @@ def display_habit_log(user_habit_id):
     
     user_habit_id = user_habit_id
     user_habit_name = crud.get_user_habit_name(user_habit_id)
-
+    type_of_execution=crud.get_type_goal(user_habit_id)
+    print(type_of_execution)
     sum_logins = crud.get_user_habit_progress_sum(user_habit_id)
     goal = crud.get_user_habit_goal(user_habit_id)
 
@@ -153,7 +153,7 @@ def display_habit_log(user_habit_id):
     
     
 
-    return render_template("habit_log_display.html", user_habit_name=user_habit_name, user_habit_id=user_habit_id, date_logs=date_logs, progress=progress, date_of=date_of)
+    return render_template("habit_log_display.html", type_of_execution=type_of_execution, user_habit_name=user_habit_name, user_habit_id=user_habit_id, date_logs=date_logs, progress=progress, date_of=date_of)
 
 @app.route('/habit_log_display/<user_habit_id>', methods=['POST'])
 def display_track_habit_log(user_habit_id):
@@ -163,7 +163,10 @@ def display_track_habit_log(user_habit_id):
     
     log_in_time = request.form.get('log_in_time')
     journal_entry=request.form.get('journal_entry')
+    type_of_hours_mins=request.form.get('type_goal')
 
+    if type_of_hours_mins == "minutes":
+        log_in_time = int(log_in_time)/60
     date_of = date.today()
     time_added = timedelta(days=7)
     date_logs = crud.get_user_habit_log_dates(user_habit_id)
@@ -223,30 +226,62 @@ def display_accountability_page(user_habit_id):
     receiver_id = session['user_id']
     messages_db = crud.get_messages_user_habit(user_habit_id)
     other_users = crud.get_user_name_same_habit(user_habit_name)
+    set_as_partner_id = crud.check_if_selected_accountability_partner(user_habit_name, receiver_id)
+    date_of = date.today()
     
-    if messages_db:
+    
+
+    if set_as_partner_id and not messages_db:
+        flash ("You were selected as an accoutability partner")
+        sender_id = set_as_partner_id
+        sender_name = crud.get_user_by_id(sender_id)
+        accountability_habit_id = crud.get_user_habit_id_habitname_userid(user_habit_name, sender_id)
+        check_messages_sender = crud.get_messages_user_habit(accountability_habit_id)
+        check_messages_receiver = crud.get_messages_user_habit(user_habit_id)
+        date_logs = crud.get_user_habit_log_dates(accountability_habit_id)
+        if date_logs:
+            last_login = date_logs[-1]
+        else:
+            last_login = "Partner has yet to log for this habit"
+
+        
+        end_date = crud.get_user_habit_end_date(accountability_habit_id)
+        days_left = (end_date-date_of).days
+        partner_sum_logins = crud.get_user_habit_progress_sum(accountability_habit_id)
+        partner_goal = crud.get_user_habit_goal(accountability_habit_id)              
+        if partner_sum_logins:
+            partner_progress = float(partner_sum_logins/partner_goal)*100
+        else:
+            partner_progress = 0
+        return render_template("messages.html", set_as_partner_id=set_as_partner_id,user_habit_id=user_habit_id,user_name=user_name, user_habit_name=user_habit_name, sender_name=sender_name, messages_db=messages_db,partner_progress=partner_progress, check_messages_sender=check_messages_sender, check_messages_receiver=check_messages_receiver, days_left=days_left, last_login=last_login)
+
+
+    elif messages_db:
         sender_id = crud.get_sender_id(user_habit_id)
         sender_name = crud.get_user_by_id(sender_id)
         accountability_habit_id = crud.get_user_habit_id_habitname_userid(user_habit_name, sender_id)
         check_messages_sender = crud.get_messages_user_habit(accountability_habit_id)
         check_messages_receiver = crud.get_messages_user_habit(user_habit_id)
-        date_of = date.today()
         date_logs = crud.get_user_habit_log_dates(accountability_habit_id)
-        last_login = date_logs[-1]
+        if date_logs:
+            last_login = date_logs[-1]
+        else:
+            last_login = "Partner has yet to log for this habit"
+
+
+        
         end_date = crud.get_user_habit_end_date(accountability_habit_id)
         days_left = (end_date-date_of).days
-        
         partner_sum_logins = crud.get_user_habit_progress_sum(accountability_habit_id)
-        partner_goal = crud.get_user_habit_goal(accountability_habit_id)
-        
+        partner_goal = crud.get_user_habit_goal(accountability_habit_id) 
         if partner_sum_logins:
             partner_progress = float(partner_sum_logins/partner_goal)*100
         else:
             partner_progress = 0
-        return render_template("messages.html", user_habit_id=user_habit_id,user_name=user_name, user_habit_name=user_habit_name, sender_name=sender_name, messages_db=messages_db,partner_progress=partner_progress, check_messages_receiver=check_messages_receiver, check_messages_sender=check_messages_sender, days_left=days_left, last_login=last_login)
+        return render_template("messages.html", set_as_partner_id=set_as_partner_id, user_habit_id=user_habit_id,user_name=user_name, user_habit_name=user_habit_name, sender_name=sender_name, messages_db=messages_db,partner_progress=partner_progress, check_messages_receiver=check_messages_receiver, check_messages_sender=check_messages_sender, days_left=days_left, last_login=last_login)
 
     else:
-        return render_template("messages.html", user_habit_id=user_habit_id, user_name=user_name,user_habit_name=user_habit_name, messages_db=messages_db, other_users=other_users)
+        return render_template("messages.html", set_as_partner_id=set_as_partner_id, user_habit_id=user_habit_id, user_name=user_name,user_habit_name=user_habit_name, messages_db=messages_db, other_users=other_users)
 
     
 @app.route('/messages/<user_habit_id>', methods=['POST'])
@@ -257,18 +292,28 @@ def partner_set_up(user_habit_id):
     messages = request.form.get('messages')
     message_date = date.today()  
     user_habit_id = user_habit_id
-     
+    user_habit_name = crud.get_user_habit_name(user_habit_id) 
     receiver_id = session['user_id']
-    
+    set_as_partner_id = crud.check_if_selected_accountability_partner(user_habit_name, receiver_id)
     messages_db = crud.get_messages_user_habit(user_habit_id)
     
       
-    if not messages_db:
+    if not messages_db and not set_as_partner_id :
         email = request.form.get('email')
         sender_id = crud.get_user_by_email(email).user_id
+        adding_partner = crud.add_accountability_partner_id(user_habit_id, sender_id)
+        accountability_habit_id = crud.get_user_habit_id_habitname_userid(user_habit_name, sender_id)
+        being_added_to_partner = crud.add_accountability_partner_id(accountability_habit_id, receiver_id)
         print(sender_id)
         messages_start = crud.create_messages(user_habit_id, sender_id, receiver_id, message_date, messages)
         flash("New partner has been sent your message")
+    
+    elif set_as_partner_id and not messages_db:
+        sender_id = set_as_partner_id
+        sender_name = crud.get_user_by_id(sender_id)
+        new_message = crud.create_messages(user_habit_id, sender_id, receiver_id, message_date, messages)
+        flash("You accepted the partnership!")
+    
     else:
         sender_id = crud.get_sender_id(user_habit_id)
         sender_name = crud.get_user_by_id(sender_id)

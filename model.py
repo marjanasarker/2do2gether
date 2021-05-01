@@ -28,7 +28,7 @@ class User_habit(db.Model):
     user_habit_id = db.Column(db.Integer, autoincrement=True, primary_key=True)      
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     habit_id = db.Column(db.Integer, db.ForeignKey('habit.habit_id'))
-    #accountability_partner_id = db.Column(db.Integer, db.ForeignKey('users.user_id')) 
+    accountability_partner_id = db.Column(db.Integer, db.ForeignKey('users.user_id')) 
     goal = db.Column(db.Integer)
     completed = db.Column(db.Boolean) #default=False
     name = db.Column(db.String)
@@ -37,7 +37,7 @@ class User_habit(db.Model):
     end_date = db.Column(db.Date)
 
     user = db.relationship('User', foreign_keys=[user_id])
-    #accountability_user = db.relationship('User', foreign_keys=[accountability_partner_id])
+    accountability_user = db.relationship('User', foreign_keys=[accountability_partner_id])
     habits = db.relationship('Habit', backref='user_habit')
 
 
