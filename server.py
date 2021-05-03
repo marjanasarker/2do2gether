@@ -20,7 +20,6 @@ def show_newaccount_form():
 
     return render_template('create_account.html')
 
-
 @app.route('/create_account', methods=['POST'])
 def register_user():
     """Creating new user"""
@@ -37,12 +36,12 @@ def register_user():
         flash('Cannot create an account, email on file. Try again.')
     else:
         new_user = crud.create_user(first_name, last_name, email, password)
-        flash('Account created! Please log in.') #where should I redirect them 
+        flash('Account created! Please log in.')  
 
-    return redirect('/login') #redirect to a profile page 
+    return redirect('/login')  
 
 
-    #return render_template('login.html')
+    
 @app.route('/login')
 def show_login():
     """Renders page where user can login"""
@@ -62,10 +61,10 @@ def regular_user_login():
         session['user_id'] = user.user_id
         num_habits=crud.get_number_of_habits(session['user_id'])
         print(session)
-        if num_habits==3:
-            return redirect('/habit_display')
-        else:
+        if num_habits<1:
             return redirect('/habit')
+        else:
+            return redirect('/habit_display')
     else:
         flash('Password or email address entered incorrectly, try again.')
 
@@ -138,7 +137,7 @@ def display_habit_log(user_habit_id):
     user_habit_id = user_habit_id
     user_habit_name = crud.get_user_habit_name(user_habit_id)
     type_of_execution=crud.get_type_goal(user_habit_id)
-    print(type_of_execution)
+    
     sum_logins = crud.get_user_habit_progress_sum(user_habit_id)
     goal = crud.get_user_habit_goal(user_habit_id)
 
@@ -304,7 +303,7 @@ def partner_set_up(user_habit_id):
         adding_partner = crud.add_accountability_partner_id(user_habit_id, sender_id)
         accountability_habit_id = crud.get_user_habit_id_habitname_userid(user_habit_name, sender_id)
         being_added_to_partner = crud.add_accountability_partner_id(accountability_habit_id, receiver_id)
-        print(sender_id)
+        
         messages_start = crud.create_messages(user_habit_id, sender_id, receiver_id, message_date, messages)
         flash("New partner has been sent your message")
     
