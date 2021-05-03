@@ -24,12 +24,20 @@
     
     {% endblock %}
   </head>
+  
   <body>
-  <div class="container-fluid">
+    <div class="container-fluid">
+      
   {% if "user_id" in session %}
 	  <a href="/logout">Logout</a>
   {% endif %}
   
+    
+    <div class="row"> 
+      <div class="col align-self-start"></div> 
+    
+        <div class = "col align-self-center">
+        <div class="card-body">
     {% for msg in get_flashed_messages() %}
     <p class="flash-msg">
       {{ msg }}
@@ -41,7 +49,11 @@
     
     {% endblock %}
     
-    {% block after_body %}{% endblock %}
+    {% block after_body %}{% endblock %}</div></div>
+    <div class="col align-self-end"></div>
+
+    
+  </div>
   </div>
   </body>
 </html>
