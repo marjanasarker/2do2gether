@@ -1,3 +1,34 @@
+body {
+  height:100%;
+  width:100%;
+}
+body::before {
+  background: url(foundation.png) no-repeat center center fixed;
+  content: '';
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  position:absolute; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
+}
+
+h1 {
+  text-align:center;
+}
+
+h2 {
+  text-align:center;
+}
+
+
 ul {
     list-style-type: none; /* Remove bullets */
     padding:0;
