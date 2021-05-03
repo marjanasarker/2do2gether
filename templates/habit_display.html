@@ -3,33 +3,37 @@
 
 
 {% block body %}
-<h1>Welcome to your dashboard, {{user_name}}!</h1>
+<h2>Welcome to your dashboard, {{user_name}}!</h2>
 <div>
 
 
 {%for habit in user_habits%}
-<ul>
-<li>{{ habit.name.upper() }} 
+<p style="text-align:center;">
+    <ul id="habit-name" style="text-align:center;">
+   
+    {{ habit.name.upper() }}
+<li>
     <a href='/habit_log_display/{{habit.user_habit_id}}'><button type="button">Log</button></a> 
     <a href='/habit_progress/{{habit.user_habit_id}}'><button type="button">Track Progress</button></a> 
     <a href='/messages/{{habit.user_habit_id}}'><button type="button">Accountability</button></a> 
 </li>
-</ul>
+</ul> </p>
 {% endfor %}
-
-<p>
-    You have {{num_habit}} more habits to set up
+</div>
+<div>
+<p style="text-align:center;">
+    You have {{num_habit}} more to set up
     
 </p>
-<p> 
+<p style="text-align:center;"> 
     {%if num_habit>0 %}
-    <a href='/habit'>Set it up here!</a>
+    <a href='/habit'><button type = "button">Set it up here</button></a>
     {%endif%}
 </p>
 </div>
 
-<div>
+
    
-</div>
+
 
 {% endblock %}
