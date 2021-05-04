@@ -43,7 +43,7 @@
     <h3>Let's check how {{sender_name}} is faring with their {{user_habit_name}}</h3>
     <p>{{sender_name}}'s progress so far is at:</p>
     <div class="progress" style="height:25px; width:50%">
-        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{partner_progress}}%"aria-valuenow={{partner_progress}} aria-valuemin="0" aria-valuemax="100">{{partner_progress}}%</div>
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{partner_progress}}; color:black; weight:bold;%"aria-valuenow={{partner_progress}} aria-valuemin="0" aria-valuemax="100">{{partner_progress}}%</div>
       </div>
     <p>{{sender_name}} has {{days_left}} days left to meet goal</p>
     <p>{{sender_name}}'s last {{user_habit_name}} log was on: {{last_login}}</p>
@@ -100,6 +100,6 @@
 
 </script>
 <div>
-    <a href='/habit_display'>Back to your dashboard</a>
+    <a href='/habit_display'><b>Back to your dashboard</b></a>
 </div>
 {% endblock %}
