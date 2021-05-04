@@ -1,9 +1,14 @@
-body {
-  height:100%;
-  width:100%;
+html, body{
+  margin:0;
+  min-height:100%;
 }
-body::before {
-  background: url(foundation.png) no-repeat center center fixed;
+/* body {
+  min-height:100%;
+  width:100%;
+} */
+
+body::before{
+  background: url('2do2getherfoundation.jpg') no-repeat fixed center;
   content: '';
   z-index: -1;
   width: 100%;
@@ -17,23 +22,37 @@ body::before {
   -moz-filter: blur(5px);
   -o-filter: blur(5px);
   -ms-filter: blur(5px);
-  filter: blur(10px);
+  filter: blur(4px);
+}
+input {
+  width: 25%;
+  
+  margin: 8px 0;
+  box-sizing: border-box;
 }
 
 h1 {
   text-align:center;
+  font-family: FreeMono, monospace;
+  font-weight: bold;
 }
 
 h2 {
   text-align:center;
+  font-family: FreeMono, monospace;
+  font-weight: bold;
 }
 
 h3 {
   text-align:center;
+  font-family: FreeMono, monospace;
+  font-weight: bold;
 }
 
 h4 {
   text-align:center;
+  font-family: FreeMono, monospace;
+  font-weight: bold;
 }
 
 
@@ -56,7 +75,15 @@ ul {
 .navbar-nav>li>a, .navbar-dark .navbar-nav .nav-link {
   color: white;
 }
-
+a {
+  font-size: 20px;
+}
 a:link {
-  color: rgb(0, 255, 98);
+  color: white;
+}
+a:visited{
+  color:cornflowerblue;
+}
+a:hover{
+  color:darkturquoise;
 }
