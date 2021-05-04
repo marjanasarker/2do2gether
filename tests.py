@@ -2,7 +2,7 @@ from unittest import TestCase
 from server import app
 from model import connect_to_db, db, example_data
 from flask import session
-import os
+
 
 
 class FlaskTests(TestCase):
@@ -30,8 +30,6 @@ class FlaskTestsDatabase(TestCase):
         app.config['TESTING'] = True
 
         #Connected to test database
-        os.system('dropdb testdb')
-        os.system('createdb testdb')
         connect_to_db(app, "postgresql:///testdb")
 
         #Creating tables and adding sample data
@@ -45,7 +43,7 @@ class FlaskTestsDatabase(TestCase):
         db.drop_all()
         db.engine.dispose()
     
-    def test_login(self):
+    def test_new_login(self):
         """Testing new user login"""
 
         result = self.client.post('/create_account', 
@@ -54,6 +52,13 @@ class FlaskTestsDatabase(TestCase):
                                    follow_redirects=True)
         self.assertIn(b'<h1>Sign-In</h1>', result.data)
     
+    def test_habit_setup(self):
+        """Testing habit setup route"""
+
+        result=self.client.post("/login", data={"email": "amanda.smith@gmail.com", "password": "ama123"},
+                                follow_redirects=True)
+        self.assertIn(b"<!doctype html>", result.data)
+
     
     
                            
