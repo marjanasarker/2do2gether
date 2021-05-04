@@ -13,11 +13,11 @@ body::before {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  -webkit-filter: blur(5px);
+  -webkit-filter: blur(10px);
   -moz-filter: blur(5px);
   -o-filter: blur(5px);
   -ms-filter: blur(5px);
-  filter: blur(5px);
+  filter: blur(10px);
 }
 
 h1 {
@@ -28,9 +28,35 @@ h2 {
   text-align:center;
 }
 
+h3 {
+  text-align:center;
+}
+
+h4 {
+  text-align:center;
+}
+
 
 ul {
     list-style-type: none; /* Remove bullets */
     padding:0;
     margin:0;
-  }
+}
+
+.navbar {
+    background-color: #836953;
+    color: white;
+    border-radius: 0px;
+}
+  
+#ubermelon-logo, #ubermelon-logo:hover, .navbar-dark .navbar-brand {
+    color: white;
+}
+  
+.navbar-nav>li>a, .navbar-dark .navbar-nav .nav-link {
+  color: white;
+}
+
+a:link {
+  color: rgb(0, 255, 98);
+}
