@@ -116,7 +116,7 @@ def example_data():
     ur = User_habit(user_id = 3, name="jogging")
     un = User_habit(user_id = 4, name="yoga")
     uo = User_habit(user_id = 1, name="yoga")
-    uk = User_habit(user_id = 1, name="meditation")
+    
 
     #sample users
     amanda = User(fname="Amanda", lname="Smith", email="amanda.smith@gmail.com", password="ama123")
@@ -124,7 +124,7 @@ def example_data():
     raquel = User(fname="Raquel", lname="Junior", email="raquel.junior@gmail.com", password="raq123")
     nondita = User(fname='Nondita', lname="Sarkar", email="nondita.sarkar@gmail.com", password="non123")
 
-    db.session.add_all([ua,uj,ur,un,uo,uk,amanda,joel,raquel,nondita])
+    db.session.add_all([ua,uj,ur,un,uo,amanda,joel,raquel,nondita])
     db.session.commit()
 
 
