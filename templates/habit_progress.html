@@ -4,8 +4,8 @@
 
 {% block body %}
 <h2>{{user_habit_name[0].upper()}}{{user_habit_name[1:]}} progress: {{progress}}%</h2>
-<div class="progress" style="height:25px; width:50%">
-    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{progress}}%"aria-valuenow={{progress}} aria-valuemin="0" aria-valuemax="100">{{progress}}%</div>
+<div class="progress" style="height:25px; width:50%;">
+    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{progress}}%; color:black; weight:bold;" aria-valuenow={{progress}} aria-valuemin="0" aria-valuemax="100">{{progress}}%</div>
   </div>
 <h4>You have {{days_left}} days left to meet goal </h4>
 <h4>Your logs for this habit</h4>
@@ -17,8 +17,8 @@
 </dl>
  {%endfor%}
 </p>
-<p>
-    <a href='/habit_display'>Back to your dashboard</a>
+<p style="text-align:center;">
+    <a href='/habit_display'><b>Back to your dashboard</b></a>
 </p>
 
 
