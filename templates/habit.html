@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 {% block title %}2do 2gether{% endblock %}
+{%block head%}
+<style>
+  body::before{
+    background: url('/static/2do2getherHabitSetup.jpg') no-repeat fixed center !important;
+    background-size: cover  !important;
+    
 
+  }
+</style>
+{%endblock%}
 {% block body %}
 
 <h2>Habit Setup Page</h2>
@@ -11,32 +20,32 @@
  
   <form action="/habit" method="POST">
     
-         <p>
+         <p style="text-align:center;">
            Habit name <input type='text' name='habit_name'>
          </p>
-         <p>
+         <p style="text-align:center;">
            <label for="execution">Type of goal execution</label>
             <select name="type_goal" id="type_goal">
             <option value="hours">Hours</option>
             <option value="days">Days</option>
             </select>
          </p>
-         <p>
+         <p style="text-align:center;">
           Goal <input type='number' id='habit-goal'name='goal'>
         </p>
-         <p>
+         <p style="text-align:center;">
            Start date:<input type="date" id="start_date" name='start_date'>
          </p>
          
-         <p>
+         <p style="text-align:center;">
            <input type="submit" value="Submit">
          </p> 
          
         </form>
 
 
-<p>{{num_habits}} habits created</p>
-<a href='/habit_display'>Back to your dashboard</a>   
+<p style="text-align:center;">{{num_habits}} habits created</p>
+<p style="text-align:center;"><a href='/habit_display'><b>Back to your dashboard</b></a></p>   
 <script>
   "use strict";
   $("#habit-goal").on('click', ()=>{
