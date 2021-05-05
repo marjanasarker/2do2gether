@@ -8,7 +8,7 @@ html, body{
 } */
 
 body::before{
-  background: url('2do2getherfoundation.jpg') no-repeat fixed center;
+  background: url('hompagesignin.jpg') no-repeat fixed center;
   content: '';
   z-index: -1;
   width: 100%;
@@ -24,46 +24,112 @@ body::before{
   -ms-filter: blur(5px);
   filter: blur(4px);
 }
-input {
-  width: 25%;
-  
-  margin: 8px 0;
-  box-sizing: border-box;
+div.settings {
+  display:grid;
+  grid-template-columns: max-content max-content;
+  grid-gap:5px;
 }
+div.settings label       { text-align:right; }
+div.settings label:after { content: ":"; }
 
 h1 {
   text-align:center;
   font-family: FreeMono, monospace;
   font-weight: bold;
+  color: #212225;
 }
 
 h2 {
   text-align:center;
   font-family: FreeMono, monospace;
   font-weight: bold;
+  color: #212225;
 }
 
 h3 {
   text-align:center;
   font-family: FreeMono, monospace;
   font-weight: bold;
+  color: #212225;
+
 }
 
 h4 {
   text-align:center;
   font-family: FreeMono, monospace;
   font-weight: bold;
-}
+  color: #212225;
 
+}
+p {
+  text-align:center;
+  text-shadow: 0.01em 0 black;
+  font-family: Courier, monospace;
+  font-weight:bold;
+  font-size:22px;
+  color:darkslategray
+  
+}
+ 
 
 ul {
     list-style-type: none; /* Remove bullets */
     padding:0;
     margin:0;
 }
+.form {
+  margin: 0 auto;
+  width: 100%;
+  height: 250px;
+}
+.form label{
+  display: inline-block;
+  text-align: right;
+  
+}
+input[type=text]{  
+  display: inline-block;
+  text-align: left;
+  padding: 10px;
+  min-width: 25%;
+  max-width:50%;
+  height: 15px;
+  font-size: 15px;
+} 
+ 
+input[type=password]{
+  display: inline-block;
+  text-align: left;
+  padding: 10px;
+  min-width: 25%;
+  max-width:50%;
+  height: 15px;
+  font-size: 15px;
+}
 
+input[type=number]{  
+  display: inline-block;
+  text-align: left;
+  padding: 10px;
+  width: 25%;
+  height: 15px;
+  font-size:15px;
+
+  
+}
+input[type=submit]{
+  border-radius: 5px;
+  font-family: Courier, monospace;
+  font-size: 15px;
+
+}
+button {
+  border-radius: 5px;
+  font-family: Courier, monospace;
+  font-size: 15px;
+}
 .navbar {
-    background-color: #836953;
+    background-color:darkslategray;
     color: white;
     border-radius: 0px;
 }
@@ -77,13 +143,34 @@ ul {
 }
 a {
   font-size: 20px;
+  font-weight: bold;
 }
 a:link {
   color: white;
 }
 a:visited{
-  color:cornflowerblue;
+  color:darkblue;
 }
 a:hover{
-  color:darkturquoise;
+  color:cornflowerblue;
+}
+
+dt{
+  text-align:right;
+}
+dd{
+  text-align:right;
+}
+dt, dd{
+   
+   
+   display:inline-block;
+   width:50%;
+}
+
+.progress-bar{
+  background-color: darkslategray;
+}
+.type_goal{
+  text-align:center;
 }
