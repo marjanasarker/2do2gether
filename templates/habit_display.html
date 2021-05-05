@@ -1,6 +1,15 @@
-{% extends 'base.html' %}{%block head%}{%endblock%}
+{% extends 'base.html' %}
 {% block title %}2do 2gether{% endblock %}
-
+{%block head%}
+<style>
+    body::before{
+      background: url('/static/HabitDisplay.jpg') no-repeat fixed center !important;
+      background-size: cover  !important;
+      
+  
+    }
+  </style>
+{%endblock%}
 
 {% block body %}
 <h2>Welcome to your dashboard, {{user_name}}!</h2>
@@ -11,7 +20,7 @@
 <p style="text-align:center;">
     <ul id="habit-name" style="text-align:center;">
    
-    {{ habit.name.upper() }}
+  <p>  {{ habit.name.upper() }} </p>
 <li>
     <a href='/habit_log_display/{{habit.user_habit_id}}'><button type="button">Log</button></a> 
     <a href='/habit_progress/{{habit.user_habit_id}}'><button type="button">Track Progress</button></a> 

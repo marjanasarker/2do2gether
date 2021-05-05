@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
 {% block title %}2do 2gether{% endblock %}
-
-
+{%block head%}
+<style>
+    body::before{
+      background: url('/static/Accountability.jpg') no-repeat fixed center !important;
+      background-size: cover  !important;
+      
+    }
+  </style>
+{%endblock%}
 {% block body %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <div>
@@ -10,13 +17,13 @@
     
     {%if not set_as_partner_id%}
     <form action='/messages/{{user_habit_id}}', method='POST'>
-    <h3>Let's set up a {{user_habit_name}} accountability partner,  {{user_name}}!</h3>
+    <h2>Let's set up a {{user_habit_name}} accountability partner,  {{user_name}}!</h2>
     
     <p>
-       Enter partner's email address <input type="text" name="email">
+       <label>Enter partner's email address</label> <input type="text" name="email">
     </p>
     <p>
-       Send your new partner a message <input type='text' name="messages">
+       <label>Send your new partner a message</label> <input type='text' name="messages">
     </p>
     <p>
         <input type = "submit">
@@ -40,14 +47,14 @@
     {% endif %}
     {% else %}
     <form action='/messages/{{user_habit_id}}', method='POST'>
-    <h3>Let's check how {{sender_name}} is faring with their {{user_habit_name}}</h3>
+    <h2>Let's check how {{sender_name}} is faring with their {{user_habit_name}}</h2>
     <p>{{sender_name}}'s progress so far is at:</p>
-    <div class="progress" style="height:25px; width:50%">
-        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{partner_progress}}; color:black; weight:bold;%"aria-valuenow={{partner_progress}} aria-valuemin="0" aria-valuemax="100">{{partner_progress}}%</div>
+    <div class="progress" style="height:40px; width:100%">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{partner_progress}}; color:white; weight:bolder;%"aria-valuenow={{partner_progress}} aria-valuemin="0" aria-valuemax="100">{{partner_progress}}%</div>
       </div>
     <p>{{sender_name}} has {{days_left}} days left to meet goal</p>
     <p>{{sender_name}}'s last {{user_habit_name}} log was on: {{last_login}}</p>
-    <p>Send {{sender_name}} a message <input type='text' name="messages"> </p>
+    <p><label>Send {{sender_name}} a message</label> <input type='text' name="messages"> </p>
     <p>
         <input type = "submit">
     </p>
@@ -55,24 +62,24 @@
     </form>
     <div>
     
-        Click below to see messages
+        <div><b>Click below to see messages</b></div>
         {% if check_messages_receiver %}
-        <p><button id=1 type="button">Messages you sent</button></p>
+        <button id=1 type="button">Messages you sent</button>
         <p>
             <ul id="list1">
             {% for record in check_messages_receiver %}
-            <li>On {{record[0]}}, you messaged: {{record[1]}}</li>
+            <li><b>On {{record[0]}}, you messaged: {{record[1]}}</b></li>
             
             {% endfor %}
             </ul>
         </p>
         {%endif%}
         {% if check_messages_sender %}
-        <p><button id="2" type="button">Messages from {{sender_name}}</button></p>
+        <button id="2" type="button">Messages from {{sender_name}}</button>
         <p>
             <ul id="list2">
             {% for record in check_messages_sender %}
-            <li>On {{record[0]}}, {{record[2]}} messaged: {{record[1]}}</li>
+            <li><b>On {{record[0]}}, {{record[2]}} messaged: {{record[1]}}</b></li>
             
             {% endfor %}
             </ul>
@@ -99,7 +106,7 @@
  });
 
 </script>
-<div>
+<p>
     <a href='/habit_display'><b>Back to your dashboard</b></a>
-</div>
+</p>
 {% endblock %}
