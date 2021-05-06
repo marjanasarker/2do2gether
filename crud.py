@@ -100,15 +100,18 @@ def get_user_name_same_habit(habit_name):
     
     same_habit_users_name_email = []
     for users in same_habit_user:
-        same_habit_users_id.append(users.user_id)
+        if users.accountability_partner_id == None:
+            same_habit_users_id.append(users.user_id)
+
     
     for user in same_habit_users_id:
         user_details = User.query.filter_by(user_id=user).one()
-        
         fname=user_details.fname
         email = user_details.email
         name_email = (fname, email)
         same_habit_users_name_email.append(name_email)
+        
+            
     return(same_habit_users_name_email)
 
 def get_user_habit_id_habitname_userid(habit_name, user_id):
