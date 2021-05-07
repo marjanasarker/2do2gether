@@ -8,7 +8,7 @@ Unfortunately, what ends up happening is that none of those habits were solidifi
 in social media seems to crush any kind of motivation. Speaking from personal experience, limiting to 1 - 3 habits to solidify
 within a 30 day period and pairing up with a partner who shares the same habit and goal as you does wonders.
 
-Ever wanted an app that can streamline that process for you?
+**Ever wanted an app that can streamline that process for you?**
 
 # Introducing:
 
@@ -22,7 +22,7 @@ Ever wanted an app that can streamline that process for you?
 * The user will have access to a daily activity tracker.
 * At the end of 30 days, the user will receive a comprehensive report on their completions/incompletions along with the bullet journal entries and accountability partner messages. 
 ***
-Tech stack used for this app: 
+**Tech stack used for this app:** 
 1. Python -- Flask, SQLAlchemy, Datetime, Jinja
 2. Database -- PostgresSQL
 3. Javascript -- jQuery, AJAX
