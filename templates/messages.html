@@ -31,13 +31,13 @@
     </form>
     
     {% if other_users and other_users|length > 1 %}
-    Others practicing {{user_habit_name}} like you
+    <b>Others practicing {{user_habit_name}} like you</b>
     
     
     <ul>
         {% for user in other_users %}
         {% if user[0] != user_name %}
-        <li>{{user[0]}}'s email address: {{user[1]}}</li>
+        <li><b>{{user[0]}}'s email address: {{user[1]}}</b></li>
         {% endif %}
         {% endfor %}
     </ul>
