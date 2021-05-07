@@ -24,6 +24,11 @@ within a 30 day period and pairing up with a partner who shares the same habit a
 ***
 **Tech stack used for this app:** 
 1. Python -- Flask, SQLAlchemy, Datetime, Jinja
-2. Database -- PostgresSQL
+2. Database -- PostgreSQL
 3. Javascript -- jQuery, AJAX
 4. Styling -- Bootstrap, HTML/CSS
+***
+**To use**
+Currently, this app can run from your local server via python3 server.py
+***
+Copyright © 2021 Marjana Sarker
