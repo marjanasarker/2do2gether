@@ -1,13 +1,17 @@
 Many of us have wondered whether we would ever be able to solidify that one good habit, be it running, meditation etc. 
+
 Few are able to accomplish it because we try to set up too many good habits together.
+
 Even worse, we think perhaps if we announce it on social media, maybe that would hold us accountable. 
+
 Unfortunately, what ends up happening is that none of those habits were solidified and the pressure from having declared 
 in social media seems to crush any kind of motivation. Speaking from personal experience, limiting to 1 - 3 habits to solidify
 within a 30 day period and pairing up with a partner who shares the same habit and goal as you does wonders.
+
 Ever wanted an app that can streamline that process for you?
-***
-Introducing:
-***
+
+# Introducing:
+
 # 2do 2gether - a 30 day habit setter with accounatability partners
 * The user can choose a maximum of 3 habits they want to accomplish in a month.
 * The user gets 2 choices on how they want to form this habit: hours or days.
