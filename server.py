@@ -165,7 +165,7 @@ def display_track_habit_log(user_habit_id):
     type_of_hours_mins=request.form.get('type_goal')
 
     if type_of_hours_mins == "minutes":
-        log_in_time = int(log_in_time)/60
+        log_in_time = float(log_in_time)/60
     date_of = date.today()
     time_added = timedelta(days=7)
     date_logs = crud.get_user_habit_log_dates(user_habit_id)
@@ -201,7 +201,7 @@ def user_habit_progress(user_habit_id):
     log_date = crud.get_user_habit_log_dates(user_habit_id)
     
     if sum_logins:
-        progress = float(sum_logins/goal)*100
+        progress = round((float(sum_logins/goal)*100),2)
     else:
         progress = 0
     return render_template("habit_progress.html", progress=progress, user_habit_name=user_habit_name, days_left=days_left, journal_entries=journal_entries, log_date=log_date)
@@ -249,7 +249,7 @@ def display_accountability_page(user_habit_id):
         partner_sum_logins = crud.get_user_habit_progress_sum(accountability_habit_id)
         partner_goal = crud.get_user_habit_goal(accountability_habit_id)              
         if partner_sum_logins:
-            partner_progress = float(partner_sum_logins/partner_goal)*100
+            partner_progress = round((float(partner_sum_logins/partner_goal)*100),2)
         else:
             partner_progress = 0
         return render_template("messages.html", set_as_partner_id=set_as_partner_id,user_habit_id=user_habit_id,user_name=user_name, user_habit_name=user_habit_name, sender_name=sender_name, messages_db=messages_db,partner_progress=partner_progress, check_messages_sender=check_messages_sender, check_messages_receiver=check_messages_receiver, days_left=days_left, last_login=last_login)
@@ -274,7 +274,7 @@ def display_accountability_page(user_habit_id):
         partner_sum_logins = crud.get_user_habit_progress_sum(accountability_habit_id)
         partner_goal = crud.get_user_habit_goal(accountability_habit_id) 
         if partner_sum_logins:
-            partner_progress = float(partner_sum_logins/partner_goal)*100
+            partner_progress = round(float(partner_sum_logins/partner_goal)*100)
         else:
             partner_progress = 0
         return render_template("messages.html", set_as_partner_id=set_as_partner_id, user_habit_id=user_habit_id,user_name=user_name, user_habit_name=user_habit_name, sender_name=sender_name, messages_db=messages_db,partner_progress=partner_progress, check_messages_receiver=check_messages_receiver, check_messages_sender=check_messages_sender, days_left=days_left, last_login=last_login)
