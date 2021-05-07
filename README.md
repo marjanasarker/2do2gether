@@ -1,3 +1,13 @@
+Many of us have wondered whether we would ever be able to solidify that one good habit, be it running, meditation etc. 
+Few are able to accomplish it because we try to set up too many good habits together.
+Even worse, we think perhaps if we announce it on social media, maybe that would hold us accountable. 
+Unfortunately, what ends up happening is that none of those habits were solidified and the pressure from having declared 
+in social media seems to crush any kind of motivation. Speaking from personal experience, limiting to 1 - 3 habits to solidify
+within a 30 day period and pairing up with a partner who shares the same habit and goal as you does wonders.
+Ever wanted an app that can streamline that process for you?
+***
+Introducing:
+***
 # 2do 2gether - a 30 day habit setter with accounatability partners
 * The user can choose a maximum of 3 habits they want to accomplish in a month.
 * The user gets 2 choices on how they want to form this habit: hours or days.
@@ -8,15 +18,8 @@
 * The user will have access to a daily activity tracker.
 * At the end of 30 days, the user will receive a comprehensive report on their completions/incompletions along with the bullet journal entries and accountability partner messages. 
 ***
-## Sprint 1
-1. ~~Set up database~~
-2. ~~Set up model python file and server python file, and the html templates for user sign-up, setting up of habits, daily progress and the accountability message page~~ 
-***
-## Sprint 2
-1. ~~Prettying the web application~~
-2. ~~Make sure the messaging between user and accountability partner happens seamlessly~~
-3. Use false data to display what a 30 day report for the user would look like
-***
-### What has not been struck through will be added to next workflow for this app
-***
-Tech stack used for this app: PostgresSQL, SQLAlchemy, Flask, Jinja, Javascript (jQuery, AJAX), Bootstrap, CSS, HTML
+Tech stack used for this app: 
+1. Python -- Flask, SQLAlchemy, Datetime, Jinja
+2. Database -- PostgresSQL
+3. Javascript -- jQuery, AJAX
+4. Styling -- Bootstrap, HTML/CSS
