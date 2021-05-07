@@ -29,6 +29,16 @@ within a 30 day period and pairing up with a partner who shares the same habit a
 4. Styling -- Bootstrap, HTML/CSS
 ***
 **To use**
-Currently, this app can run from your local server via python3 server.py
+
+Clone the repo in your virtualenv 
+
+Install dependencies: $ pip3 install -r requirements.txt
+
+Run the Flask server to start the web app: $ python3 server.py
+
+Click the link generated for local host: localhost:5000
+
+Voila! now you have access the app in your local browser!
+
 ***
 Copyright © 2021 Marjana Sarker
