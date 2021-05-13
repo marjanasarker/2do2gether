@@ -10,7 +10,7 @@ within a 30 day period and pairing up with a partner who shares the same habit a
 
 **Ever wanted an app that can streamline that process for you?**
 
-[![Introductory video here](/static/YouTubeLink.png)](https://www.youtube.com/watch?v=A-N1Qg-Zd1I&t=37s)
+[![Introductory video here](/static/YouTubeLink.png)](https://www.youtube.com/watch?v=A-N1Qg-Zd1I)
 
 # Introducing:
 
